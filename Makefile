@@ -10,6 +10,7 @@ docker-up:
 	docker-compose up --build -d
 
 permissions:
+	sudo chown -R root:root var
 	sudo chmod -R 777 var
 	
 env:
@@ -28,7 +29,3 @@ migration:
 
 test:
 	docker-compose exec php-cli composer test
-
-permissions:
-	sudo chown -R root:root var
-	sudo chmod -R 777 var

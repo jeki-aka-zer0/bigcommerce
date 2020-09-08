@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-use Src\Bc\Infrastructure\Translations\TranslatorFactory;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Src\Bc\Infrastructure\Ui\Web\Validator\Validator;
+use Src\Core\Infrastructure\Ui\Web\Validator\Validator;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -13,9 +11,9 @@ use Slim\Error\Renderers\JsonErrorRenderer;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\ErrorHandlerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
-use Src\Bc\Infrastructure\Ui\Web\Middleware\JsonBodyParserMiddleware;
-use Src\Bc\Infrastructure\Ui\Web\Middleware\ErrorsCatcherMiddleware;
-use Src\Bc\Infrastructure\Ui\Shared\AppBuilder\LogErrorHandler;
+use Src\Core\Infrastructure\Ui\Web\Middleware\JsonBodyParserMiddleware;
+use Src\Core\Infrastructure\Ui\Web\Middleware\ErrorsCatcherMiddleware;
+use Src\Core\Infrastructure\Ui\Shared\AppBuilder\LogErrorHandler;
 use Slim\Error\Renderers\PlainTextErrorRenderer;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,12 +40,11 @@ return [
 
     ErrorsCatcherMiddleware::class => new ErrorsCatcherMiddleware(),
 
-    ValidatorInterface::class => function (ContainerInterface $c): ValidatorInterface {
+    ValidatorInterface::class => function (): ValidatorInterface {
         AnnotationRegistry::registerLoader('class_exists');
 
         return Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
-            ->setTranslator($c->get(TranslatorInterface::class))
             ->getValidator();
     },
 
@@ -56,14 +53,5 @@ return [
     ),
 
     'config' => [
-        'translations' => [
-            'locale' => 'ru',
-            'format' => 'php',
-            'dir' => ROOT_DIR . '/src/Bc/Infrastructure/Translations/data',
-            'files' => [
-                'validators.ru.php',
-                'errors.ru.php',
-            ],
-        ],
     ],
 ];

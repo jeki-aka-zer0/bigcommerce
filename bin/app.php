@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-use Src\Bc\Infrastructure\Ui\Console\AppBuilder\AppDirector;
+use Src\Core\Infrastructure\Ui\Console\AppBuilder\AppDirector;
 
 !defined('ROOT_DIR') && define('ROOT_DIR', dirname(__DIR__));
 

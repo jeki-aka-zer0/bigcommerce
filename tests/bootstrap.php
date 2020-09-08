@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Src\Bc\Infrastructure\Ui\Shared\AppBuilder\EnvLoader;
+use Src\Core\Infrastructure\Ui\Shared\AppBuilder\EnvLoader;
 
 !defined('ROOT_DIR') && define('ROOT_DIR', dirname(__DIR__));
 
