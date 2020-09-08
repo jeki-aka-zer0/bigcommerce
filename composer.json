@@ -5,6 +5,7 @@
     "require": {
         "php": ">=7.4.0",
         "ext-json": "*",
+        "bigcommerce/api": "^3.2",
         "doctrine/migrations": "^2.2",
         "doctrine/orm": "^2.7",
         "laminas/laminas-config-aggregator": "^1.2",
