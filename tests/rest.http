@@ -1,0 +1,44 @@
+### Home page
+GET http://localhost
+Content-Type: application/json
+
+### Init
+POST http://localhost/init
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "John Doe"
+}
+
+### Level choose
+POST http://localhost/level-choose
+Content-Type: application/json
+
+{
+  "id": 1,
+  "level": "easy"
+}
+
+### Gamoe move
+POST http://localhost/game-move
+Content-Type: application/json
+
+{
+  "id": 1,
+  "figures": "0123"
+}
+
+### Gamoe stop
+POST http://localhost/game-stop
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+### Scores
+GET http://localhost/scores?id=1
+Content-Type: application/json
+
+###

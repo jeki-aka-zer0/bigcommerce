@@ -1,0 +1,44 @@
+version: '3'
+services:
+
+  nginx:
+    build:
+      context: ./docker
+      dockerfile: nginx.docker
+    volumes:
+      - ./:/var/www
+    ports:
+      - "80:80"
+    depends_on:
+      - php-fpm
+      - db
+
+  php-fpm:
+    build:
+      context: ./docker
+      dockerfile: php-fpm.docker
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+
+  php-cli:
+    build:
+      context: ./docker
+      dockerfile: php-cli.docker
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+    working_dir: /var/www
+    tty: true
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./var/docker/postgres:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_USER=bull"
+      - "POSTGRES_PASSWORD=cow"
+      - "POSTGRES_DB=bulls_and_cows"

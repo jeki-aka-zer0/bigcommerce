@@ -1,0 +1,9 @@
+FROM php:7.4-cli
+
+RUN apt-get update && apt-get install -y libmcrypt-dev zlib1g-dev libpq-dev wget libzip-dev \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo_pgsql pgsql zip bcmath
+
+RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quiet
+
+WORKDIR /var/www
