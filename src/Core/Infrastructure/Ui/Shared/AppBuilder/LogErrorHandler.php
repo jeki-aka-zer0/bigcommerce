@@ -11,8 +11,6 @@ use Slim\Interfaces\CallableResolverInterface;
 
 final class LogErrorHandler extends ErrorHandler
 {
-    private LoggerInterface $logger;
-
     public function __construct(LoggerInterface $logger, CallableResolverInterface $callableResolver, ResponseFactoryInterface $responseFactory)
     {
         $this->logger = $logger;

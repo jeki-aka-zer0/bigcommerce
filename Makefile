@@ -1,6 +1,6 @@
 up: docker-up
 
-init: docker-clear docker-up permissions env composer
+init: docker-clear docker-up permissions env composer ssl
 
 docker-clear:
 	docker-compose down --remove-orphans
@@ -19,6 +19,12 @@ env:
 
 composer:
 	docker-compose exec php-cli composer install
+
+ssl:
+	docker-compose exec nginx rm -f docker/nginx/ssl-cert-snakeoil.key
+	docker-compose exec nginx rm -f docker/nginx/ssl-cert-snakeoil.pem
+	docker-compose exec nginx ln -sr docker/nginx/ssl-cert-snakeoil.example.key docker/nginx/ssl-cert-snakeoil.key
+	docker-compose exec nginx ln -sr docker/nginx/ssl-cert-snakeoil.example.pem docker/nginx/ssl-cert-snakeoil.pem
 
 migration-diff:
 	rm -rf api/var/cache/doctrine

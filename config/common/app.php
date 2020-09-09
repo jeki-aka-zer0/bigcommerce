@@ -51,7 +51,4 @@ return [
     Validator::class => fn(ContainerInterface $c) => new Validator(
         $c->get(ValidatorInterface::class),
     ),
-
-    'config' => [
-    ],
 ];

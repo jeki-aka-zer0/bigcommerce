@@ -3,6 +3,8 @@
 .DS_Store
 Thumbs.db
 
+/docker/nginx/ssl/ssl-cert-snakeoil.key
+/docker/nginx/ssl/ssl-cert-snakeoil.pem
 /var/*
 /var/cache/*
 !/var/cache/.gitkeep
