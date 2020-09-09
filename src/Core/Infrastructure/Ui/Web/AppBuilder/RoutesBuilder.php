@@ -14,5 +14,6 @@ final class RoutesBuilder extends AbstractBuilder
         $validator = $this->getContainer()->get(Validator::class);
 
         $this->getApp()->get('/', Action\Home\Action::class . '::handle');
+        $this->getApp()->get('/big-commerce/auth', Action\BigCommerce\Auth\Action::class . '::handle');
     }
 }
