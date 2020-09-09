@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Src\Core\Application\Integration\Create;
 
 use Bigcommerce\Api\Client;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Src\Core\Application\Integration\Create\Command;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\Integration;
@@ -33,11 +35,12 @@ final class Handler
         $this->credentials->context = $command->getContext();
         $this->credentials->scope = $command->getScope();
 
-        file_put_contents('/tmp/php-log', serialize($this->credentials));
-
         $authTokenResponse = Client::getAuthToken($this->credentials);
 
-        file_put_contents('/tmp/php-log', serialize($authTokenResponse));
+        // create a log channel
+        $log = new Logger('name');
+        $log->pushHandler(new StreamHandler(ROOT_DIR . '/var/log/app.log'));
+        $log->warning(serialize($authTokenResponse));
 
 
         /*$this->integrations->findById();

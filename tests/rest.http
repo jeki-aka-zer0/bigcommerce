@@ -1,9 +1,9 @@
 ### Home page
-GET https://127.0.0.1:8081
+GET https://127.0.0.1
 Content-Type: application/json
 
 ### Auth
-GET https://127.0.0.1:8081/big-commerce/auth?code=test-code&context=test-context&scope=test-scope
+GET https://127.0.0.1/big-commerce/auth?code=test-code&context=test-context&scope=test-scope
 Content-Type: application/json
 
 ###
