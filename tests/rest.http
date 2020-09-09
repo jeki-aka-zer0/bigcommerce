@@ -6,4 +6,8 @@ Content-Type: application/json
 GET https://127.0.0.1/big-commerce/auth?code=test-code&context=test-context&scope=test-scope
 Content-Type: application/json
 
+### Load
+GET https://127.0.0.1/big-commerce/load
+Content-Type: application/json
+
 ###
