@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth;
 
 use Bigcommerce\Api\Client;
-use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -15,11 +15,6 @@ class Action implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        var_dump($request->getAttribute('code'));
-        var_dump($request->getAttribute('context'));
-        var_dump($request->getAttribute('scope'));
-//        exit;
-
         $object = new \stdClass();
 
         // todo move to global
@@ -31,14 +26,14 @@ class Action implements RequestHandlerInterface
         $object->client_secret = $clientSecret;
         $object->redirect_uri = $redirectUri;
 
-        // todo validate
-        $object->code = $request->getAttribute('code');
-        $object->context = $request->getAttribute('context');
-        $object->scope = $request->getAttribute('scope');
+        // todo move to form
+        $object->code = $request->getQueryParams()['code'];
+        $object->context = $request->getQueryParams()['context'];
+        $object->scope = $request->getQueryParams()['scope'];
 
         $authTokenResponse = Client::getAuthToken($object);
 
-        var_dump($authTokenResponse);
+        file_put_contents('/tmp/php-log', serialize($authTokenResponse));
 
 //        Client::configure([
 //            'client_id' => '$clientId',
@@ -46,6 +41,6 @@ class Action implements RequestHandlerInterface
 //            'store_hash' => 'xxxxxxx'
 //        ]);
 
-        return new JsonResponse([]);
+        return new EmptyResponse();
     }
 }
