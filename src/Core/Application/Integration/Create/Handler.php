@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Application\Integration\Create;
 
 use Bigcommerce\Api\Client;
+use Bigcommerce\Api\Connection;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Src\Core\Application\Integration\Create\Command;
@@ -35,12 +36,18 @@ final class Handler
         $this->credentials->context = $command->getContext();
         $this->credentials->scope = $command->getScope();
 
-        $authTokenResponse = Client::getAuthToken($this->credentials);
+//        $authTokenResponse = Client::getAuthToken($this->credentials);
+
+        $context = array_merge(['grant_type' => 'authorization_code'], (array)$this->credentials);
+        $connection = new Connection();
+        $authTokenResponse = $connection->post('https://login.bigcommerce.com' . '/oauth2/token', $context);
 
         // create a log channel
         $log = new Logger('name');
         $log->pushHandler(new StreamHandler(ROOT_DIR . '/var/log/app.log'));
+        $log->warning(serialize($this->credentials));
         $log->warning(serialize($authTokenResponse));
+        $log->warning($connection->getLastError());
 
 
         /*$this->integrations->findById();
