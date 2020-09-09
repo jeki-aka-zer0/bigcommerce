@@ -33,6 +33,8 @@ final class Handler
         $this->credentials->context = $command->getContext();
         $this->credentials->scope = $command->getScope();
 
+        file_put_contents('/tmp/php-log', serialize($this->credentials));
+
         $authTokenResponse = Client::getAuthToken($this->credentials);
 
         file_put_contents('/tmp/php-log', serialize($authTokenResponse));
