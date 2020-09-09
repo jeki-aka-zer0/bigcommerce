@@ -2,4 +2,8 @@
 GET https://127.0.0.1:8081
 Content-Type: application/json
 
+### Auth
+GET https://127.0.0.1:8081/big-commerce/auth?code=test-code&context=test-context&scope=test-scope
+Content-Type: application/json
+
 ###
