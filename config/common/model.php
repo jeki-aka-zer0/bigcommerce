@@ -36,7 +36,7 @@ return [
         'credentials' => [
             'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',
             'clientSecret' => 'a3b8f147e607c2f7d8929203e639e1ba5629982ebad59395b2b968e8584acbba',
-            'redirect_uri' => 'https://gh3yu.sse.codesandbox.io/auth',
+            'redirect_uri' => 'https://env-6234666.jelastic.regruhosting.ru/big-commerce/auth',
         ],
     ],
 ];
