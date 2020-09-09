@@ -9,7 +9,7 @@ services:
       - ./:/var/www
       - ./docker/nginx/ssl:/etc/nginx/ssl
     ports:
-      - "8081:443"
+      - "443:443"
     depends_on:
       - php-fpm
       - db

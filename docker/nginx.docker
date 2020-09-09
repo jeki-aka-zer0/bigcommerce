@@ -1,7 +1,5 @@
 FROM nginx:1.17.0
 
-ADD ./nginx/default.conf /etc/nginx/conf.d/default.conf
-ADD ./nginx/ssl/ssl-cert-snakeoil.example.key /etc/nginx/ssl/ssl-cert-snakeoil.key
-ADD ./nginx/ssl/ssl-cert-snakeoil.example.pem /etc/nginx/ssl/ssl-cert-snakeoil.pem
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /var/www
