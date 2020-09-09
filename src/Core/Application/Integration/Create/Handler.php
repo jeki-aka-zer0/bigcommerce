@@ -47,7 +47,7 @@ final class Handler
         $log->pushHandler(new StreamHandler(ROOT_DIR . '/var/log/app.log'));
         $log->warning(serialize($this->credentials));
         $log->warning(serialize($authTokenResponse));
-        $log->warning($connection->getLastError());
+        $log->warning(serialize($connection->getLastError()));
 
 
         /*$this->integrations->findById();
