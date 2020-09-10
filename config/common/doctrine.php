@@ -18,7 +18,7 @@ return [
             $params['metadata_dirs'],
             $params['dev_mode'],
             null,
-            new FilesystemCache($params['cache_dir']),
+            null, // new FilesystemCache($params['cache_dir']),
             false
         );
 
@@ -34,7 +34,7 @@ return [
     'config' => [
         'doctrine' => [
             'dev_mode' => false,
-            'cache_dir' => ROOT_DIR . '/var/cache/doctrine',
+//            'cache_dir' => ROOT_DIR . '/var/cache/doctrine',
             'metadata_dirs' => [
                 ROOT_DIR . '/src/Core/Domain/Model',
             ],
