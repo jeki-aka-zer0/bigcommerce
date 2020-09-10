@@ -35,7 +35,7 @@ return [
             'dev_mode' => false,
             'cache_dir' => ROOT_DIR . '/var/cache/doctrine',
             'metadata_dirs' => [
-                ROOT_DIR . '/src/Installation/Domain',
+                ROOT_DIR . '/src/Core/Domain/Model',
             ],
             'connection' => [
                 'url' => getenv('DB_URL'),

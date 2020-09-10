@@ -30,6 +30,14 @@ final class DoctrineIntegrationRepository implements IntegrationRepository
         return $integration;
     }
 
+    public function findByStoreHash(string $storeHash): ?Integration
+    {
+        /** @var Integration $integration */
+        $integration = $this->repo->findOneBy(['store_hash' => $storeHash]);
+
+        return $integration;
+    }
+
     public function add(Integration $game): void
     {
         $this->em->persist($game);

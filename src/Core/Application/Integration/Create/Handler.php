@@ -23,11 +23,17 @@ final class Handler
 
     private FlusherInterface $flusher;
 
+    private Logger $logger;
+
     public function __construct(CredentialsDto $credentials, IntegrationRepository $integrations, FlusherInterface $flusher)
     {
         $this->credentials = $credentials;
         $this->integrations = $integrations;
         $this->flusher = $flusher;
+
+        // todo move?
+        $this->logger = new Logger('name');
+        $this->logger->pushHandler(new StreamHandler(ROOT_DIR . '/var/log/app.log'));
     }
 
     public function handle(Command $command): void
@@ -36,26 +42,26 @@ final class Handler
         $this->credentials->context = $command->getContext();
         $this->credentials->scope = $command->getScope();
 
-//        $authTokenResponse = Client::getAuthToken($this->credentials);
+        $response = Client::getAuthToken($this->credentials);
+        if (!$response) {
+            $this->logger->critical('Error on auth', (array) $this->credentials);
 
-        $context = array_merge(['grant_type' => 'authorization_code'], (array)$this->credentials);
-        $connection = new Connection();
-        $authTokenResponse = $connection->post('https://login.bigcommerce.com' . '/oauth2/token', $context);
+            return;
+        }
 
-        // create a log channel
-        $log = new Logger('name');
-        $log->pushHandler(new StreamHandler(ROOT_DIR . '/var/log/app.log'));
-        $log->warning(serialize($this->credentials));
-        $log->warning(serialize($authTokenResponse));
-        $log->warning(serialize($connection->getLastError()));
+        [$context, $storeHash] = explode('/', $response->context, 2);
 
+        $integration = $this->integrations->findByStoreHash($storeHash);
+        if (null !== $integration) {
+            $this->logger->critical('Store already exists', ['store_hash' => $storeHash]);
 
-        /*$this->integrations->findById();
+            return;
+        }
 
-        $integration = new Integration(Id::next());
+        $integration = new Integration(Id::next(), $storeHash, (array) $response);
 
         $this->integrations->add($integration);
 
-        $this->flusher->flush($integration);*/
+        $this->flusher->flush($integration);
     }
 }
