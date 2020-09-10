@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Domain\Model\Auth;
+namespace Src\Core\Domain\Model\Load;
 
 final class LoadBodyExtractor
 {
-    private CredentialsDto $credentials;
+    private string $clientSecret;
 
-    public function __construct(CredentialsDto $credentials)
+    public function __construct(string $clientSecret)
     {
-        $this->credentials = $credentials;
+        $this->clientSecret = $clientSecret;
     }
 
     public function extract(string $signedPayload): array
@@ -23,9 +23,9 @@ final class LoadBodyExtractor
         $data = json_decode($jsonStr, true);
 
         // confirm the signature
-        $expectedSignature = hash_hmac('sha256', $jsonStr, $this->credentials->client_secret, $raw = false);
+        $expectedSignature = hash_hmac('sha256', $jsonStr, $this->clientSecret, $raw = false);
         if (!hash_equals($expectedSignature, $signature)) {
-            throw new WrongSignedPayloadException();
+            throw new WrongLoadPayloadException();
         }
 
         return $data;

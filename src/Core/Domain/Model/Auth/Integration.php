@@ -28,6 +28,12 @@ final class Integration
     private Hash $storeHash;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $apiKey;
+
+    /**
      * @var array
      * @ORM\Column(type="json")
      */
@@ -45,5 +51,10 @@ final class Integration
         $this->storeHash = $storeHash;
         $this->authPayload = $authPayload;
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
     }
 }

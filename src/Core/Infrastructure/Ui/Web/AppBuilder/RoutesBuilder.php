@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Src\Core\Infrastructure\Ui\Web\AppBuilder;
 
-use Laminas\Diactoros\Response\HtmlResponse;
 use Src\Core\Infrastructure\Ui\Web\Action;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth\Form as AuthForm;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Load\Form as LoadForm;

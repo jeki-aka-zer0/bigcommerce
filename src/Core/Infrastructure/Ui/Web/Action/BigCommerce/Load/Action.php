@@ -26,8 +26,12 @@ class Action implements RequestHandlerInterface
         $queryParams = $request->getQueryParams();
         $command = new Command($queryParams['signed_payload']);
 
-        $this->handler->handle($command);
+        $integration = $this->handler->handle($command);
 
-        return new HtmlResponse('Load Success (testing)');
+        if (empty($integration->getApiKey())) {
+            return new HtmlResponse('Load Success (no api key)');
+        }
+
+        return new HtmlResponse('Load Success (api key)');
     }
 }

@@ -8,7 +8,7 @@ use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Auth\LoadBodyExtractor;
+use Src\Core\Domain\Model\Load\LoadBodyExtractor;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
@@ -36,10 +36,11 @@ return [
 
     IntegrationViewHandler::class => fn(ContainerInterface $c) => new IntegrationViewHandler(
         $c->get(LoadBodyExtractor::class),
+        $c->get(IntegrationRepository::class),
     ),
 
     LoadBodyExtractor::class => fn(ContainerInterface $c) => new LoadBodyExtractor(
-        $c->get(CredentialsDto::class),
+        $c->get('config')['credentials']['clientSecret'],
     ),
 
     'config' => [
