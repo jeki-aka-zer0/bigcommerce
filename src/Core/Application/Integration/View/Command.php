@@ -6,5 +6,15 @@ namespace Src\Core\Application\Integration\View;
 
 final class Command
 {
-    // tbd
+    private string $signedPayload;
+
+    public function __construct(string $signedPayload)
+    {
+        $this->signedPayload = $signedPayload;
+    }
+
+    public function getSignedPayload(): string
+    {
+        return $this->signedPayload;
+    }
 }
