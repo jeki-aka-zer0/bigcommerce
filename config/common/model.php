@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
+use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
@@ -31,6 +32,8 @@ return [
         $c->get(IntegrationRepository::class),
         $c->get(FlusherInterface::class),
     ),
+
+    IntegrationViewHandler::class => fn(ContainerInterface $c) => new IntegrationViewHandler(),
 
     'config' => [
         'credentials' => [
