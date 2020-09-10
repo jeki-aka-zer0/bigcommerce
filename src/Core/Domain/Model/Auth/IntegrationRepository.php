@@ -10,7 +10,7 @@ interface IntegrationRepository
 {
     public function findById(Id $integrationId): ?Integration;
 
-    public function findByStoreHash(string $storeHash): ?Integration;
+    public function findByStoreHash(Hash $storeHash): ?Integration;
 
     public function add(Integration $game): void;
 }

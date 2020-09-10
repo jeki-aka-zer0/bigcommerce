@@ -12,9 +12,6 @@ final class Id
 {
     private string $id;
 
-    /**
-     * @param string $idRaw
-     */
     public function __construct(string $idRaw)
     {
         $this->id = trim($idRaw);

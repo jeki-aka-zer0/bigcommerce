@@ -22,10 +22,10 @@ final class Integration
     private Id $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
+     * @var Hash
+     * @ORM\Column(type="hash")
      */
-    private string $storeHash;
+    private Hash $storeHash;
 
     /**
      * @var array
@@ -39,7 +39,7 @@ final class Integration
      */
     private DateTimeImmutable $createdAt;
 
-    public function __construct(Id $id, string $storeHash, array $authPayload)
+    public function __construct(Id $id, Hash $storeHash, array $authPayload)
     {
         $this->id = $id;
         $this->storeHash = $storeHash;

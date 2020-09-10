@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Setup;
 use Psr\Container\ContainerInterface;
 use Doctrine\DBAL;
+use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineHashType;
 use Src\Core\Infrastructure\Domain\Model\DoctrineIdType;
 
 return [
@@ -42,6 +43,7 @@ return [
             ],
             'types' => [
                 DoctrineIdType::NAME => DoctrineIdType::class,
+                DoctrineHashType::NAME => DoctrineHashType::class,
             ],
         ],
     ],

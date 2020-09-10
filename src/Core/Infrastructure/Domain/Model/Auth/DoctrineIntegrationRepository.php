@@ -6,6 +6,7 @@ namespace Src\Core\Infrastructure\Domain\Model\Auth;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Id;
@@ -30,10 +31,10 @@ final class DoctrineIntegrationRepository implements IntegrationRepository
         return $integration;
     }
 
-    public function findByStoreHash(string $storeHash): ?Integration
+    public function findByStoreHash(Hash $storeHash): ?Integration
     {
         /** @var Integration $integration */
-        $integration = $this->repo->findOneBy(['storeHash' => $storeHash]);
+        $integration = $this->repo->findOneBy(['storeHash' => $storeHash->getHash()]);
 
         return $integration;
     }
