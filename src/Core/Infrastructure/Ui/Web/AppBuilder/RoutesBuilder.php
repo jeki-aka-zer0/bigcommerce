@@ -7,6 +7,7 @@ namespace Src\Core\Infrastructure\Ui\Web\AppBuilder;
 use Src\Core\Infrastructure\Ui\Web\Action;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth\Form as AuthForm;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Load\Form as LoadForm;
+use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Update\Form as UpdateForm;
 use Src\Core\Infrastructure\Ui\Web\Validator\Validator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
@@ -25,5 +26,8 @@ final class RoutesBuilder extends AbstractBuilder
 
         $this->getApp()->get('/big-commerce/load', Action\BigCommerce\Load\Action::class . '::handle')
             ->add(fn(Request $r, Handler $h) => (new Validation($validator, new LoadForm($r)))->process($r, $h));
+
+        $this->getApp()->post('/big-commerce/update', Action\BigCommerce\Update\Action::class . '::handle')
+            ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UpdateForm($r)))->process($r, $h));
     }
 }

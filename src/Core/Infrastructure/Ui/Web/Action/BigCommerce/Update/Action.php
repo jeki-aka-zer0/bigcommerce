@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth;
+namespace Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Update;
 
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Src\Core\Application\Integration\Create\Command;
-use Src\Core\Application\Integration\Create\Handler;
+use Src\Core\Application\Integration\Update\Handler;
+use Src\Core\Application\Integration\Update\Command;
 
 class Action implements RequestHandlerInterface
 {
@@ -23,10 +23,10 @@ class Action implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $command = new Command($queryParams['code'], $queryParams['context'], $queryParams['scope']);
+        $command = new Command($queryParams['store_hash'], $queryParams['api_key']);
 
         $this->handler->handle($command);
 
-        return new HtmlResponse('Installed!');
+        return new HtmlResponse('<h1>The application is installed and configured</h1>');
     }
 }
