@@ -28,6 +28,6 @@ class Action implements RequestHandlerInterface
 
         $this->handler->handle($command);
 
-        return new HtmlResponse('Auth Success (testing)');
+        return new HtmlResponse('Installed!');
     }
 }

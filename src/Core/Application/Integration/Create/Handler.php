@@ -8,7 +8,6 @@ use Src\Core\Domain\Model\Auth\AuthTokenExtractor;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Auth\StoreAlreadyExistsException;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Id;
 
@@ -38,7 +37,7 @@ final class Handler
 
         $integration = $this->integrations->findByStoreHash($storeHash);
         if (null !== $integration) {
-            throw new StoreAlreadyExistsException();
+            return;
         }
 
         $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
