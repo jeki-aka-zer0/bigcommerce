@@ -17,6 +17,7 @@
         "slim/slim": "4.*",
         "symfony/console": "^5.0",
         "symfony/dotenv": "^5.0",
+        "symfony/templating": "^5.1",
         "symfony/validator": "^5.0",
         "webmozart/assert": "^1.6"
     },

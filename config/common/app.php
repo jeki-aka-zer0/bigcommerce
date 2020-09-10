@@ -17,6 +17,11 @@ use Src\Core\Infrastructure\Ui\Shared\AppBuilder\LogErrorHandler;
 use Slim\Error\Renderers\PlainTextErrorRenderer;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Templating\Helper\SlotsHelper;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Templating\TemplateNameParser;
+use Src\Core\Domain\Model\Load\LoadBodyExtractor;
 
 return [
     ResponseFactoryInterface::class => fn() => new ResponseFactory(),
@@ -51,4 +56,17 @@ return [
     Validator::class => fn(ContainerInterface $c) => new Validator(
         $c->get(ValidatorInterface::class),
     ),
+
+    LoadBodyExtractor::class => fn(ContainerInterface $c) => new LoadBodyExtractor(
+        $c->get('config')['credentials']['clientSecret'],
+    ),
+
+    PhpEngine::class => function(ContainerInterface $c) {
+        $filesystemLoader = new FilesystemLoader(ROOT_DIR.'/src/Core/Infrastructure/Ui/Web/Action/%name%');
+
+        $templating = new PhpEngine(new TemplateNameParser(), $filesystemLoader);
+        $templating->set(new SlotsHelper());
+
+        return $templating;
+    },
 ];

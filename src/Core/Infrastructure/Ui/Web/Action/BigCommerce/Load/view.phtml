@@ -1,0 +1,21 @@
+<?php
+declare(strict_types=1);
+/**
+ * @var \Src\Core\Domain\Model\Auth\Integration $integration
+ * @var string $storeHash
+ */
+?>
+
+<script>
+    <?php echo 'const APP_CONFIG = {store_hash: "' . $storeHash . '"}'; ?>
+</script>
+
+<?php if (!empty($integration->getApiKey())) { ?>
+    <h1>The application is installed and configured</h1>
+<?php } else { ?>
+    <form action="/big-commerce/update" method="post">
+        <input type="text" name="api_key">
+        <input type="hidden" name="store_hash" value="<?php echo $storeHash ?>">
+        <button type="submit">Send</button>
+    </form>
+<?php } ?>

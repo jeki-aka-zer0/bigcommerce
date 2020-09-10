@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Load;
 
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Src\Core\Application\Integration\View\Handler;
 use Src\Core\Application\Integration\View\Command;
+use Symfony\Component\Templating\PhpEngine;
 
 class Action implements RequestHandlerInterface
 {
+    private PhpEngine $phpEngine;
+
     private Handler $handler;
 
-    public function __construct(Handler $handler)
+    public function __construct(Handler $handler, PhpEngine $phpEngine)
     {
         $this->handler = $handler;
+        $this->phpEngine = $phpEngine;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -26,12 +29,13 @@ class Action implements RequestHandlerInterface
         $queryParams = $request->getQueryParams();
         $command = new Command($queryParams['signed_payload']);
 
-        $integration = $this->handler->handle($command);
+        $this->handler->handle($command);
 
-        if (empty($integration->getApiKey())) {
-            return new HtmlResponse('Load Success (no api key)');
-        }
+        $params = [
+            'integration' => $this->handler->getIntegration(),
+            'storeHash' => $this->handler->getStoreHash(),
+        ];
 
-        return new HtmlResponse('Load Success (api key)');
+        return new HtmlResponse($this->phpEngine->render('BigCommerce/Load/view.phtml', $params));
     }
 }

@@ -13,9 +13,13 @@ use Src\Core\Domain\Model\Load\WrongLoadPayloadException;
 final class Handler
 {
 
-    protected LoadBodyExtractor $loadBodyExtractor;
+    private LoadBodyExtractor $loadBodyExtractor;
 
-    protected IntegrationRepository $integrationRepository;
+    private IntegrationRepository $integrationRepository;
+
+    private ?Integration $integration;
+
+    private ?string $storeHash;
 
     public function __construct(LoadBodyExtractor $loadBodyExtractor, IntegrationRepository $integrationRepository)
     {
@@ -23,7 +27,7 @@ final class Handler
         $this->integrationRepository = $integrationRepository;
     }
 
-    public function handle(Command $command): Integration
+    public function handle(Command $command): void
     {
         $payload = $this->loadBodyExtractor->extract($command->getSignedPayload());
         $storeHash = $payload['store_hash'] ?? null;
@@ -38,6 +42,17 @@ final class Handler
             throw new WrongLoadPayloadException();
         }
 
-        return $integration;
+        $this->integration = $integration;
+        $this->storeHash = $storeHash;
+    }
+
+    public function getIntegration(): Integration
+    {
+        return $this->integration;
+    }
+
+    public function getStoreHash(): string
+    {
+        return $this->storeHash;
     }
 }

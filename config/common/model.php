@@ -39,10 +39,6 @@ return [
         $c->get(IntegrationRepository::class),
     ),
 
-    LoadBodyExtractor::class => fn(ContainerInterface $c) => new LoadBodyExtractor(
-        $c->get('config')['credentials']['clientSecret'],
-    ),
-
     'config' => [
         'credentials' => [
             'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',
