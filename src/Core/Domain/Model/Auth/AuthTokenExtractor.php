@@ -33,6 +33,10 @@ final class AuthTokenExtractor
     {
         if (null === $this->response) {
             $this->response = Client::getAuthToken($this->credentials);
+
+            if (false === $this->response) {
+                throw new WrongResponseException();
+            }
         }
 
         return $this->response;
