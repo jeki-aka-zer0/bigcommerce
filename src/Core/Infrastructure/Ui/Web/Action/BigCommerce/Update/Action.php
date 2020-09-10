@@ -22,8 +22,8 @@ class Action implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $queryParams = $request->getQueryParams();
-        $command = new Command($queryParams['store_hash'], $queryParams['api_key']);
+        $body = $request->getParsedBody();
+        $command = new Command($body['store_hash'], $body['api_key']);
 
         $this->handler->handle($command);
 

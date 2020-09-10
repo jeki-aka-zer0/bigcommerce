@@ -23,6 +23,7 @@ final class Handler
 
     public function handle(Command $command): void
     {
+        // @todo UNSECURE
         $integration = $this->integrationRepository->findByStoreHash(new Hash($command->getStoreHash()));
 
         if (null === $integration) {
