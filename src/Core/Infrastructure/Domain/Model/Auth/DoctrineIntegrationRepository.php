@@ -33,7 +33,7 @@ final class DoctrineIntegrationRepository implements IntegrationRepository
     public function findByStoreHash(string $storeHash): ?Integration
     {
         /** @var Integration $integration */
-        $integration = $this->repo->findOneBy(['store_hash' => $storeHash]);
+        $integration = $this->repo->findOneBy(['storeHash' => $storeHash]);
 
         return $integration;
     }
