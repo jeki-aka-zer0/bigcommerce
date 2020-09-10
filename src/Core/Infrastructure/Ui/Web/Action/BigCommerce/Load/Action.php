@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth;
+namespace Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Load;
 
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Src\Core\Application\Integration\Create\Command;
-use Src\Core\Application\Integration\Create\Handler;
+use Src\Core\Application\Integration\View\Handler;
+use Src\Core\Application\Integration\View\Command;
 
 class Action implements RequestHandlerInterface
 {
@@ -24,10 +24,10 @@ class Action implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $command = new Command($queryParams['code'], $queryParams['context'], $queryParams['scope']);
+        $command = new Command();
 
         $this->handler->handle($command);
 
-        return new HtmlResponse('Auth Success (testing)');
+        return new HtmlResponse('Load Success (testing)');
     }
 }
