@@ -26,7 +26,7 @@ final class ValidationMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($errors = $this->validator->validate($this->form)) {
-            throw new ValidationException($errors);
+            throw new ValidationException('', 0, null, $errors);
         }
 
         foreach ($this->form->toArray() as $name => $value) {

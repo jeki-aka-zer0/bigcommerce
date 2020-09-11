@@ -45,7 +45,7 @@ final class DoctrineIntegrationRepository implements IntegrationRepository
         $integration = $this->findByStoreHash($storeHash);
 
         if (null === $integration) {
-            throw new IntegrationNotFoundException();
+            throw new IntegrationNotFoundException($storeHash->getHash());
         }
 
         return $integration;

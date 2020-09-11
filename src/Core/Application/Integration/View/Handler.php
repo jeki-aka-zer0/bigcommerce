@@ -36,11 +36,7 @@ final class Handler
             throw new WrongLoadPayloadException();
         }
 
-        $integration = $this->integrationRepository->findByStoreHash(new Hash($storeHash));
-
-        if (null === $integration) {
-            throw new WrongLoadPayloadException();
-        }
+        $integration = $this->integrationRepository->getByStoreHash(new Hash($storeHash));
 
         $this->integration = $integration;
         $this->storeHash = $storeHash;

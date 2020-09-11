@@ -23,7 +23,7 @@ final class AuthTokenExtractor
         $chunks = explode('/', $this->getResponse()->context, 2);
 
         if (empty($chunks[1])) {
-            throw new WrongHashException();
+            throw new WrongHashException($this->getResponse()->context);
         }
 
         return new Hash($chunks[1]);

@@ -9,7 +9,8 @@ use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Auth\WebhookManager;
+use Src\Core\Domain\Model\Webhook\Scopes;
+use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\Load\LoadBodyExtractor;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
@@ -62,10 +63,7 @@ return [
         ],
         'webhook' => [
             'receivePath' => '/big-commerce/webhook/receive',
-            'scopes' => [
-                'store/cart/created',
-                'store/cart/updated',
-            ],
+            'scopes' => Scopes::ALL,
         ],
         'credentials' => [
             'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',

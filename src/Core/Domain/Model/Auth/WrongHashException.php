@@ -9,8 +9,10 @@ use Throwable;
 
 final class WrongHashException extends CommonRuntimeException
 {
-    public function __construct(string $message = 'Wrong hash', $code = 0, Throwable $previous = null)
+    public function __construct(string $context, $code = 0, Throwable $previous = null)
     {
+        $message = sprintf('Wrong hash: %s', $context);
+
         parent::__construct($message, $code, $previous);
     }
 }

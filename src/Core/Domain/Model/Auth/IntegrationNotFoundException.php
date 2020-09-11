@@ -9,8 +9,10 @@ use Throwable;
 
 final class IntegrationNotFoundException extends CommonRuntimeException
 {
-    public function __construct(string $message = 'Integration not found', $code = 0, Throwable $previous = null)
+    public function __construct(string $hash, $code = 0, Throwable $previous = null)
     {
+        $message = sprintf('Integration not found: %s', $hash);
+
         parent::__construct($message, $code, $previous);
     }
 }

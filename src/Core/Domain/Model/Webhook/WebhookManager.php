@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Domain\Model\Auth;
+namespace Src\Core\Domain\Model\Webhook;
 
 use Bigcommerce\Api\Client;
 

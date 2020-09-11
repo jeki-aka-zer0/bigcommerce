@@ -12,9 +12,9 @@ final class ValidationException extends CommonRuntimeException
 {
     private Errors $errors;
 
-    public function __construct(Errors $errors, int $code = 0, Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, Throwable $previous = null, Errors $errors)
     {
-        parent::__construct('Validation errors.', $code, $previous);
+        parent::__construct($message ?: 'Validation errors', $code, $previous);
         $this->errors = $errors;
     }
 

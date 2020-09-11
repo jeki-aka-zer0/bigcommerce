@@ -8,7 +8,7 @@ use Src\Core\Domain\Model\Auth\AuthTokenExtractor;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Auth\WebhookManager;
+use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Id;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
