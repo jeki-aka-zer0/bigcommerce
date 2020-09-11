@@ -53,6 +53,11 @@ final class Integration
         $this->createdAt = new DateTimeImmutable();
     }
 
+    public function setApiKey(string $apiKey): void
+    {
+        $this->apiKey = $apiKey;
+    }
+
     public function getApiKey(): ?string
     {
         return $this->apiKey;

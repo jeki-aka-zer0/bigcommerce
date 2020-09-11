@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
+use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Auth\WebhookManager;
@@ -38,6 +39,11 @@ return [
     IntegrationViewHandler::class => fn(ContainerInterface $c) => new IntegrationViewHandler(
         $c->get(LoadBodyExtractor::class),
         $c->get(IntegrationRepository::class),
+    ),
+
+    IntegrationUpdateHandler::class => fn(ContainerInterface $c) => new IntegrationUpdateHandler(
+        $c->get(IntegrationRepository::class),
+        $c->get(FlusherInterface::class),
     ),
 
     WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
