@@ -21,15 +21,20 @@ final class RoutesBuilder extends AbstractBuilder
 
         $this->getApp()->get('/', Action\Home\Action::class . '::handle');
 
-        $this->getApp()->get('/big-commerce/auth', Action\BigCommerce\Auth\Action::class . '::handle')
-            ->add(fn(Request $r, Handler $h) => (new Validation($validator, new AuthForm($r)))->process($r, $h));
+        $this->getApp()->group(
+            '/big-commerce',
+            function () use ($validator): void {
+                $this->getApp()->get('/auth', Action\BigCommerce\Auth\Action::class . '::handle')
+                    ->add(fn(Request $r, Handler $h) => (new Validation($validator, new AuthForm($r)))->process($r, $h));
 
-        $this->getApp()->get('/big-commerce/load', Action\BigCommerce\Load\Action::class . '::handle')
-            ->add(fn(Request $r, Handler $h) => (new Validation($validator, new LoadForm($r)))->process($r, $h));
+                $this->getApp()->get('/load', Action\BigCommerce\Load\Action::class . '::handle')
+                    ->add(fn(Request $r, Handler $h) => (new Validation($validator, new LoadForm($r)))->process($r, $h));
 
-        $this->getApp()->get($this->getContainer()->get('webhook')['receiveUrl'], Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
+                $this->getApp()->post('/update', Action\BigCommerce\Update\Action::class . '::handle')
+                    ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UpdateForm($r)))->process($r, $h));
 
-        $this->getApp()->post('/big-commerce/update', Action\BigCommerce\Update\Action::class . '::handle')
-            ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UpdateForm($r)))->process($r, $h));
+                $this->getApp()->get('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
+            }
+        );
     }
 }
