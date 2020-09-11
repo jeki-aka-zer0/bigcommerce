@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Ui\Web\Validator\Validator;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -69,4 +70,8 @@ return [
 
         return $templating;
     },
+
+    ClientConfigurator::class => fn(ContainerInterface $c) => new ClientConfigurator(
+        $c->get('config')['credentials']['clientId'],
+    ),
 ];

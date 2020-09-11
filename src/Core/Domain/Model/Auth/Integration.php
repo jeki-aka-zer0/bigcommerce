@@ -62,4 +62,14 @@ final class Integration
     {
         return $this->apiKey;
     }
+
+    public function getAccessToken(): string
+    {
+        return $this->authPayload['access_token'];
+    }
+
+    public function getStoreHash(): string
+    {
+        return $this->storeHash->getHash();
+    }
 }
