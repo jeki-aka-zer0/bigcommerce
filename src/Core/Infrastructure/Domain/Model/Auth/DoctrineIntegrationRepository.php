@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\Integration;
+use Src\Core\Domain\Model\Auth\IntegrationNotFoundException;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Id;
 
@@ -35,6 +36,17 @@ final class DoctrineIntegrationRepository implements IntegrationRepository
     {
         /** @var Integration $integration */
         $integration = $this->repo->findOneBy(['storeHash' => $storeHash->getHash()]);
+
+        return $integration;
+    }
+
+    public function getByStoreHash(Hash $storeHash): Integration
+    {
+        $integration = $this->findByStoreHash($storeHash);
+
+        if (null === $integration) {
+            throw new IntegrationNotFoundException();
+        }
 
         return $integration;
     }

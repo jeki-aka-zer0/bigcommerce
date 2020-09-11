@@ -12,6 +12,7 @@ use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Auth\WebhookManager;
 use Src\Core\Domain\Model\Load\LoadBodyExtractor;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
 
@@ -34,6 +35,8 @@ return [
         $c->get(CredentialsDto::class),
         $c->get(IntegrationRepository::class),
         $c->get(FlusherInterface::class),
+        $c->get(ClientConfigurator::class),
+        $c->get(WebhookManager::class),
     ),
 
     IntegrationViewHandler::class => fn(ContainerInterface $c) => new IntegrationViewHandler(
@@ -44,9 +47,12 @@ return [
     IntegrationUpdateHandler::class => fn(ContainerInterface $c) => new IntegrationUpdateHandler(
         $c->get(IntegrationRepository::class),
         $c->get(FlusherInterface::class),
+        $c->get(ClientConfigurator::class),
+        $c->get(WebhookManager::class),
     ),
 
     WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
+        $c->get('config')['webhook']['scopes'],
         $c->get('config')['main']['domain'] . $c->get('config')['webhook']['receivePath'],
     ),
 
@@ -56,6 +62,10 @@ return [
         ],
         'webhook' => [
             'receivePath' => '/big-commerce/webhook/receive',
+            'scopes' => [
+                'store/cart/created',
+                'store/cart/updated',
+            ],
         ],
         'credentials' => [
             'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',

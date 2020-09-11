@@ -68,8 +68,8 @@ final class Integration
         return $this->authPayload['access_token'];
     }
 
-    public function getStoreHash(): string
+    public function getStoreHash(): Hash
     {
-        return $this->storeHash->getHash();
+        return $this->storeHash;
     }
 }

@@ -12,5 +12,13 @@ interface IntegrationRepository
 
     public function findByStoreHash(Hash $storeHash): ?Integration;
 
+    /**
+     * @param Hash $storeHash
+     *
+     * @return Integration
+     * @throws IntegrationNotFoundException
+     */
+    public function getByStoreHash(Hash $storeHash): Integration;
+
     public function add(Integration $game): void;
 }

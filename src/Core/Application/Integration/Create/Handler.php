@@ -8,8 +8,10 @@ use Src\Core\Domain\Model\Auth\AuthTokenExtractor;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Auth\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Id;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Handler
 {
@@ -19,11 +21,22 @@ final class Handler
 
     private FlusherInterface $flusher;
 
-    public function __construct(CredentialsDto $credentials, IntegrationRepository $integrations, FlusherInterface $flusher)
-    {
+    private ClientConfigurator $clientConfigurator;
+
+    private WebhookManager $webhookManager;
+
+    public function __construct(
+        CredentialsDto $credentials,
+        IntegrationRepository $integrations,
+        FlusherInterface $flusher,
+        ClientConfigurator $clientConfigurator,
+        WebhookManager $webhookManager
+    ) {
         $this->credentials = $credentials;
         $this->integrations = $integrations;
         $this->flusher = $flusher;
+        $this->clientConfigurator = $clientConfigurator;
+        $this->webhookManager = $webhookManager;
     }
 
     public function handle(Command $command): void
@@ -41,6 +54,10 @@ final class Handler
         }
 
         $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
+
+        $this->clientConfigurator->configureV3($integration);
+
+        $this->webhookManager->subscribe();
 
         $this->integrations->add($integration);
 

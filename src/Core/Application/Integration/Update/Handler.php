@@ -6,37 +6,37 @@ namespace Src\Core\Application\Integration\Update;
 
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Auth\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
-use Src\Core\Domain\Model\Load\WrongLoadPayloadException;
 use Bigcommerce\Api\Client;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Handler
 {
-    protected ClientConfigurator $clientConfigurator;
-
     private FlusherInterface $flusher;
 
     private IntegrationRepository $integrationRepository;
 
-    public function __construct(IntegrationRepository $integrationRepository, FlusherInterface $flusher, ClientConfigurator $clientConfigurator)
+    private ClientConfigurator $clientConfigurator;
+
+    private WebhookManager $webhookManager;
+
+    public function __construct(IntegrationRepository $integrationRepository, FlusherInterface $flusher, ClientConfigurator $clientConfigurator, WebhookManager $webhookManager)
     {
         $this->integrationRepository = $integrationRepository;
         $this->flusher = $flusher;
         $this->clientConfigurator = $clientConfigurator;
+        $this->webhookManager = $webhookManager;
     }
 
     public function handle(Command $command): void
     {
         // @todo UNSECURE
-        $integration = $this->integrationRepository->findByStoreHash(new Hash($command->getStoreHash()));
-
-        if (null === $integration) {
-            // @todo change
-            throw new WrongLoadPayloadException();
-        }
+        $integration = $this->integrationRepository->getByStoreHash(new Hash($command->getStoreHash()));
 
         $this->clientConfigurator->configureV3($integration);
+
+        $this->webhookManager->subscribe();
 
         // @todo errors
         // @todo make client

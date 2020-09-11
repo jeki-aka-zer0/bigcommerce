@@ -8,22 +8,26 @@ use Bigcommerce\Api\Client;
 
 final class WebhookManager
 {
-    private const SCOPES = ['store/cart/created', 'store/cart/updated'];
+    private array $scopes;
 
     private string $destination;
 
-    public function __construct(string $destination)
+    public function __construct(array $scopes, string $destination)
     {
+        $this->scopes = $scopes;
         $this->destination = $destination;
     }
 
     public function subscribe(): void
     {
-        array_map(fn($scope) => Client::createWebhook(
-            [
-                'scope' => $scope,
-                'destination' => $this->destination,
-            ]
-        ), self::SCOPES);
+        array_map(
+            fn(string $scope) => Client::createWebhook(
+                [
+                    'scope' => $scope,
+                    'destination' => $this->destination,
+                ]
+            ),
+            $this->scopes
+        );
     }
 }
