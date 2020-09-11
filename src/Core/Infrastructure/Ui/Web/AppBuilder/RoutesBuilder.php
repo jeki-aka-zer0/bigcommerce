@@ -25,5 +25,7 @@ final class RoutesBuilder extends AbstractBuilder
 
         $this->getApp()->get('/big-commerce/load', Action\BigCommerce\Load\Action::class . '::handle')
             ->add(fn(Request $r, Handler $h) => (new Validation($validator, new LoadForm($r)))->process($r, $h));
+
+        $this->getApp()->get($this->getContainer()->get('webhook')['receiveUrl'], Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
     }
 }
