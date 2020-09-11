@@ -11,6 +11,6 @@ final class Handler
         // @todo
         $log = new \Monolog\Logger('name');
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/wh.log'));
-        $log->warning(serialize($command->getData()));
+        $log->warning(serialize($command->getScore()).serialize($command->getData()));
     }
 }

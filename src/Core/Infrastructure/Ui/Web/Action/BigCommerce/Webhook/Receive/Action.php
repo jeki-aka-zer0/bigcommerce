@@ -22,7 +22,7 @@ final class Action implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $command = new Command($request->getAttribute('data'));
+        $command = new Command($request->getAttribute('score'), $request->getAttribute('data'));
 
         $this->handler->handle($command);
 
