@@ -63,6 +63,11 @@ final class Integration
         return $this->apiKey;
     }
 
+    public function getAccountId(): ?int
+    {
+        return explode(':', $this->apiKey)[0];
+    }
+
     public function getAccessToken(): string
     {
         return $this->authPayload['access_token'];

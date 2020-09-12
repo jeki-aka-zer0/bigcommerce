@@ -25,9 +25,16 @@ final class ScriptManager
     {
         $this->clientConfigurator->configureV3($integration);
 
+        $hash = $integration->getStoreHash()->getHash();
+        $accountId = $integration->getAccountId();
+
+        if (null === $accountId) {
+            throw new EmptyAccountIdException();
+        }
+
         $response = Client::createResource('/content/scripts', [
             'name' => 'ManyChat Script',
-            'src' => $this->src,
+            'src' => sprintf($this->src, $hash, $accountId),
             'auto_uninstall' => true,
             'load_method' => 'default',
             'location' => 'footer',

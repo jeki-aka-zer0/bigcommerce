@@ -95,7 +95,7 @@ return [
             'scopes' => Scopes::ALL,
         ],
         'script' => [
-            'jsPath' => '/bigcommerce.js',
+            'jsPath' => '/bigcommerce.js?store_hash=%s&account_id=%s',
         ],
         'credentials' => [
             'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',
