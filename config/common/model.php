@@ -65,6 +65,7 @@ return [
         $c->get(LoadBodyExtractor::class),
         $c->get(IntegrationRepository::class),
         $c->get(DoctrineRemover::class),
+        $c->get(FlusherInterface::class),
     ),
 
     WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(),

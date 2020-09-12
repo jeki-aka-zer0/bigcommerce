@@ -8,6 +8,7 @@ final class Handler
 {
     public function handle(Command $command): void
     {
+        // @todo в целях дебага закоментил вызов этого Webhook\Receive\Action
         // @todo
         $log = new \Monolog\Logger('name');
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/wh.log'));
