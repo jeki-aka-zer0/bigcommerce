@@ -41,7 +41,7 @@ final class WebhookManager
                     throw new WrongResponseException('hook: ' . $scope . ' - ' . json_encode(Client::getLastError()));
                 }
 
-                var_dump($response);
+                var_dump(Client::listWebhooks());
                 exit;
             },
             $this->scopes
