@@ -6,21 +6,28 @@ namespace Src\Core\Domain\Model\Webhook;
 
 use Bigcommerce\Api\Client;
 use Src\Core\Domain\Model\Api\WrongResponseException;
+use Src\Core\Domain\Model\Auth\Integration;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class WebhookManager
 {
+    private ClientConfigurator $clientConfigurator;
+
     private array $scopes;
 
     private string $destination;
 
-    public function __construct(array $scopes, string $destination)
+    public function __construct(ClientConfigurator $clientConfigurator, array $scopes, string $destination)
     {
         $this->scopes = $scopes;
         $this->destination = $destination;
+        $this->clientConfigurator = $clientConfigurator;
     }
 
-    public function subscribe(): void
+    public function subscribe(Integration $integration): void
     {
+        $this->clientConfigurator->configureV2($integration);
+
         array_map(
             function(string $scope) {
                 $response = Client::createWebhook(

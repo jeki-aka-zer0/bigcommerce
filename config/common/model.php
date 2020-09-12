@@ -56,7 +56,6 @@ return [
     IntegrationUpdateHandler::class => fn(ContainerInterface $c) => new IntegrationUpdateHandler(
         $c->get(IntegrationRepository::class),
         $c->get(FlusherInterface::class),
-        $c->get(ClientConfigurator::class),
         $c->get(WebhookManager::class),
         $c->get(ScriptManager::class),
     ),
@@ -68,11 +67,13 @@ return [
     ),
 
     WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
+        $c->get(ClientConfigurator::class),
         $c->get('config')['webhook']['scopes'],
         $c->get('config')['main']['domain'] . $c->get('config')['webhook']['receivePath'],
     ),
 
     ScriptManager::class => fn(ContainerInterface $c) => new ScriptManager(
+        $c->get(ClientConfigurator::class),
         $c->get('config')['main']['domain'] . $c->get('config')['script']['jsPath'],
     ),
 

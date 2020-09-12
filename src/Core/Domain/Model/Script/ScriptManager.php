@@ -6,18 +6,25 @@ namespace Src\Core\Domain\Model\Script;
 
 use Bigcommerce\Api\Client;
 use Src\Core\Domain\Model\Api\WrongResponseException;
+use Src\Core\Domain\Model\Auth\Integration;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class ScriptManager
 {
-    protected string $src;
+    private string $src;
 
-    public function __construct(string $src)
+    private ClientConfigurator $clientConfigurator;
+
+    public function __construct(ClientConfigurator $clientConfigurator, string $src)
     {
         $this->src = $src;
+        $this->clientConfigurator = $clientConfigurator;
     }
 
-    public function addToStore(): void
+    public function addToStore(Integration $integration): void
     {
+        $this->clientConfigurator->configureV3($integration);
+
         $response = Client::createResource('/content/scripts', [
             'name' => 'ManyChat Script',
             'src' => $this->src,
