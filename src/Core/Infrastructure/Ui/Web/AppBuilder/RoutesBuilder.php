@@ -35,10 +35,10 @@ final class RoutesBuilder extends AbstractBuilder
                 $group->post('/update', Action\BigCommerce\Update\Action::class . '::handle')
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UpdateForm($r)))->process($r, $h));
 
-                $group->post('/uninstall', Action\BigCommerce\Uninstall\Action::class . '::handle')
+                $group->get('/uninstall', Action\BigCommerce\Uninstall\Action::class . '::handle')
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UninstallForm($r)))->process($r, $h));
 
-                $group->get('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
+                $group->post('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
             }
         );
     }
