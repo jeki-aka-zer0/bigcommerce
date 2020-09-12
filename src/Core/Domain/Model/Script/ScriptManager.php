@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Script;
 
 use Bigcommerce\Api\Client;
+use Src\Core\Domain\Model\Api\WrongResponseException;
 
 final class ScriptManager
 {
@@ -28,7 +29,7 @@ final class ScriptManager
         ]);
 
         if (false === $response) {
-            throw new CreateScriptException(json_encode(Client::getLastError()));
+            throw new WrongResponseException('script - ' . json_encode(Client::getLastError()));
         }
     }
 }

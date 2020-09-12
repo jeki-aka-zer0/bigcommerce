@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Domain\Model\Script;
+namespace Src\Core\Domain\Model\Api;
 
 use Src\Core\Domain\Model\CommonRuntimeException;
 use Throwable;
 
-final class CreateScriptException extends CommonRuntimeException
+final class WrongResponseException extends CommonRuntimeException
 {
     public function __construct(string $scope, $code = 0, Throwable $previous = null)
     {
-        $message = sprintf('Create scripts error: %s', $scope);
+        $message = sprintf('Wrong response: %s', $scope);
 
         parent::__construct($message, $code, $previous);
     }
