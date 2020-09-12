@@ -40,6 +40,6 @@ services:
     volumes:
       - ./var/docker/postgres:/var/lib/postgresql/data
     environment:
-      - "POSTGRES_USER=bull"
-      - "POSTGRES_PASSWORD=cow"
-      - "POSTGRES_DB=bulls_and_cows"
+      - "POSTGRES_USER=manychat"
+      - "POSTGRES_PASSWORD=secret"
+      - "POSTGRES_DB=bigcommerce"

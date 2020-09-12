@@ -19,7 +19,7 @@ return [
     'config' => [
         'logger' => [
             'name' => 'API',
-            'file' => ROOT_DIR . '/var/log/app.log',
+            'file' => ROOT_DIR . '/var/log/errors.log',
             'displayErrorDetails' => false,
             'logErrors' => true,
             'logErrorDetails' => true,
