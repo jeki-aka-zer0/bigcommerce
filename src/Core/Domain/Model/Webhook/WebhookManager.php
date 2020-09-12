@@ -28,7 +28,9 @@ final class WebhookManager
     {
         $this->clientConfigurator->configureV2($integration);
 
+        echo '<pre>';
         var_dump(Client::listWebhooks());
+        echo '</pre>';
         exit;
 
         array_map(
