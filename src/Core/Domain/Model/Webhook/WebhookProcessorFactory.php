@@ -16,10 +16,10 @@ final class WebhookProcessorFactory
 
     private IntegrationRepository $integrations;
 
-    public function __construct(StoreRepository $stores, IntegrationRepository $inttegrations)
+    public function __construct(StoreRepository $stores, IntegrationRepository $integrations)
     {
         $this->stores = $stores;
-        $this->integrations = $inttegrations;
+        $this->integrations = $integrations;
     }
 
     public function build(string $scope, array $data): WebhookProcessor
