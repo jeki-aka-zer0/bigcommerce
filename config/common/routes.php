@@ -7,6 +7,7 @@ use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
+use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Infrastructure\Ui\Web\Action;
 use Symfony\Component\Templating\PhpEngine;
 
@@ -28,5 +29,9 @@ return [
 
     Action\BigCommerce\Uninstall\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Uninstall\Action(
         $c->get(IntegrationUninstallHandler::class),
+    ),
+
+    Action\BigCommerce\Webhook\Receive\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Webhook\Receive\Action(
+        $c->get(WebhookReceiveHandler::class),
     ),
 ];

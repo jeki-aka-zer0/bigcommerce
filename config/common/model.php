@@ -8,6 +8,7 @@ use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
+use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Store\StoreExtractor;
@@ -65,6 +66,8 @@ return [
         $c->get(IntegrationRepository::class),
         $c->get(DoctrineRemover::class),
     ),
+
+    WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(),
 
     WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
         $c->get(ClientConfigurator::class),
