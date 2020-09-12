@@ -28,6 +28,9 @@ final class WebhookManager
     {
         $this->clientConfigurator->configureV2($integration);
 
+        var_dump(Client::listWebhooks());
+        exit;
+
         array_map(
             function(string $scope) {
                 $response = Client::createWebhook(
@@ -40,9 +43,6 @@ final class WebhookManager
                 if (false === $response) {
                     throw new WrongResponseException('hook: ' . $scope . ' - ' . json_encode(Client::getLastError()));
                 }
-
-                var_dump(Client::listWebhooks());
-                exit;
             },
             $this->scopes
         );
