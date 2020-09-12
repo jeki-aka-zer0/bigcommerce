@@ -29,3 +29,6 @@ migration:
 
 test:
 	docker-compose exec php-cli composer test
+
+pull:
+	git pull origin master

@@ -47,3 +47,10 @@ services:
       - "POSTGRES_USER=manychat"
       - "POSTGRES_PASSWORD=secret"
       - "POSTGRES_DB=bigcommerce"
+
+  adminer:
+    container_name: bigcommerce_adminers
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
