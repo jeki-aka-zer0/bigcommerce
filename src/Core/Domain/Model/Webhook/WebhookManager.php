@@ -37,6 +37,9 @@ final class WebhookManager
                     ]
                 );
 
+                var_dump($response);
+                exit;
+
                 if (false === $response) {
                     throw new WrongResponseException('hook: ' . $scope . ' - ' . json_encode(Client::getLastError()));
                 }
