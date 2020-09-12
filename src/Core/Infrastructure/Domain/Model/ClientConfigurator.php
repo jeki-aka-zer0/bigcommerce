@@ -26,19 +26,11 @@ final class ClientConfigurator
         $this->configure($integration);
 
         Client::$api_path = 'https://api.bigcommerce.com/stores/' . $integration->getStoreHash()->getHash() . '/v3';
-
-        var_dump(Client::$api_path);
     }
 
     public function configure(Integration $integration): void
     {
         Client::configure([
-            'client_id' => $this->clientId,
-            'auth_token' => $integration->getAccessToken(),
-            'store_hash' => $integration->getStoreHash()->getHash(),
-        ]);
-
-        var_dump([
             'client_id' => $this->clientId,
             'auth_token' => $integration->getAccessToken(),
             'store_hash' => $integration->getStoreHash()->getHash(),

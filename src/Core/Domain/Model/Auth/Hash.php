@@ -18,7 +18,7 @@ final class Hash
 
     public function getHash(): string
     {
-        return $this->hash;
+        return trim($this->hash);
     }
 
     public function __toString(): string
