@@ -27,6 +27,6 @@ class Action implements RequestHandlerInterface
 
         $this->handler->handle($command);
 
-        return new HtmlResponse('Installed!');
+        return new HtmlResponse('Installed! Refresh to continue');
     }
 }
