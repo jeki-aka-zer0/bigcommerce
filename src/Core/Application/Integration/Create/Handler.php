@@ -14,7 +14,6 @@ use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Id;
-use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Handler
 {
@@ -26,8 +25,6 @@ final class Handler
 
     private FlusherInterface $flusher;
 
-    private ClientConfigurator $clientConfigurator;
-
     private WebhookManager $webhookManager;
 
     public function __construct(
@@ -35,14 +32,12 @@ final class Handler
         IntegrationRepository $integrations,
         StoreRepository $stores,
         FlusherInterface $flusher,
-        ClientConfigurator $clientConfigurator,
         WebhookManager $webhookManager
     ) {
         $this->credentials = $credentials;
         $this->integrations = $integrations;
         $this->stores = $stores;
         $this->flusher = $flusher;
-        $this->clientConfigurator = $clientConfigurator;
         $this->webhookManager = $webhookManager;
     }
 
@@ -62,15 +57,13 @@ final class Handler
 
         $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
 
-        $this->clientConfigurator->configureV3($integration);
-        $this->webhookManager->subscribe();
+        $this->webhookManager->subscribe($integration);
 
-        // @todo check does it work?
-        /*$storeExtractor = new StoreExtractor();
-        $store = new Store($storeExtractor->getId(), $integration, (array)$storeExtractor->getStore());*/
+        $storeExtractor = new StoreExtractor();
+        $store = new Store($storeExtractor->getId(), $integration, (array)$storeExtractor->getStore());
 
         $this->integrations->add($integration);
-//        $this->stores->add($store);
+        $this->stores->add($store);
 
         $this->flusher->flush($integration);
     }

@@ -44,7 +44,6 @@ return [
         $c->get(IntegrationRepository::class),
         $c->get(StoreRepository::class),
         $c->get(FlusherInterface::class),
-        $c->get(ClientConfigurator::class),
         $c->get(WebhookManager::class),
     ),
 
