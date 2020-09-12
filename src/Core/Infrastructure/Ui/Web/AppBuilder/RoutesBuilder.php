@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Src\Core\Infrastructure\Ui\Web\AppBuilder;
 
+use Slim\Routing\RouteCollectorProxy;
 use Src\Core\Infrastructure\Ui\Web\Action;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth\Form as AuthForm;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Load\Form as LoadForm;
@@ -23,17 +24,17 @@ final class RoutesBuilder extends AbstractBuilder
 
         $this->getApp()->group(
             '/big-commerce',
-            function () use ($validator): void {
-                $this->getApp()->get('/auth', Action\BigCommerce\Auth\Action::class . '::handle')
+            function (RouteCollectorProxy $group) use ($validator): void {
+                $group->get('/auth', Action\BigCommerce\Auth\Action::class . '::handle')
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new AuthForm($r)))->process($r, $h));
 
-                $this->getApp()->get('/load', Action\BigCommerce\Load\Action::class . '::handle')
+                $group->get('/load', Action\BigCommerce\Load\Action::class . '::handle')
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new LoadForm($r)))->process($r, $h));
 
-                $this->getApp()->post('/update', Action\BigCommerce\Update\Action::class . '::handle')
+                $group->post('/update', Action\BigCommerce\Update\Action::class . '::handle')
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UpdateForm($r)))->process($r, $h));
 
-                $this->getApp()->get('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
+                $group->get('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
             }
         );
     }
