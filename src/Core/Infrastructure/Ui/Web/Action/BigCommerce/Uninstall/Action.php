@@ -8,8 +8,8 @@ use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Src\Core\Application\Integration\View\Handler;
-use Src\Core\Application\Integration\View\Command;
+use Src\Core\Application\Integration\Uninstall\Handler;
+use Src\Core\Application\Integration\Uninstall\Command;
 
 class Action implements RequestHandlerInterface
 {
