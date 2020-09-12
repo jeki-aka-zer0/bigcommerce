@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Store;
 
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
