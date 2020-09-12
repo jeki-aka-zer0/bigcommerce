@@ -4,36 +4,23 @@ declare(strict_types=1);
 
 namespace Src\Core\Domain\Model\Webhook;
 
-use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Cart\CartCreatedWebhookProcessor;
-use Src\Core\Domain\Model\Store\StoreRepository;
+use Src\Core\Domain\Model\Cart\CartWebhookProcessor;
 
 final class WebhookProcessorFactory
 {
-    private const KEY_STORE_ID = 'store_id';
+    private CartWebhookProcessor $cartProcessor;
 
-    private StoreRepository $stores;
-
-    private IntegrationRepository $integrations;
-
-    public function __construct(StoreRepository $stores, IntegrationRepository $integrations)
+    public function __construct(CartWebhookProcessor $cartProcessor)
     {
-        $this->stores = $stores;
-        $this->integrations = $integrations;
+        $this->cartProcessor = $cartProcessor;
     }
 
-    public function build(string $scope, array $data): WebhookProcessor
+    public function build(string $scope): WebhookProcessor
     {
-        $store = $this->stores->getById($data[self::KEY_STORE_ID]);
-        $integration = $this->integrations->getByStoreHash($store->getIntegration()->getStoreHash());
-
-        $dto = new WebhookDto($scope, $data, $store, $integration);
-
         switch ($scope) {
             case Scopes::CART_CREATED:
-                return new CartCreatedWebhookProcessor($dto);
             case Scopes::CART_UPDATED:
-                return new CartCreatedWebhookProcessor($dto);
+                return $this->cartProcessor;
         }
 
         throw new UnknownScopeException($scope);

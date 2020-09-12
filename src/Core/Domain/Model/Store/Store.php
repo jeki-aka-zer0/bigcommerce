@@ -6,7 +6,6 @@ namespace Src\Core\Domain\Model\Store;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Src\Bc\Domain\Model\Player\Player;
 use Src\Core\Domain\Model\Auth\Integration;
 
 /**

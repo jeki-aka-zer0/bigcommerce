@@ -60,6 +60,6 @@ final class Handler
         $this->integrations->add($integration);
         $this->stores->add($store);
 
-        $this->flusher->flush($integration);
+        $this->flusher->flush($integration, $store);
     }
 }

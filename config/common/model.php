@@ -11,13 +11,15 @@ use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHa
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
 use Src\Core\Domain\Model\Script\ScriptManager;
-use Src\Core\Domain\Model\Webhook\WebhookManager;
+use Src\Core\Domain\Model\Webhook\WebhookHandler;
 use Src\Core\Domain\Model\LoadBodyExtractor;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
+use Src\Core\Infrastructure\Domain\Model\Cart\DoctrineCartRepository;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
@@ -57,7 +59,7 @@ return [
     IntegrationUpdateHandler::class => fn(ContainerInterface $c) => new IntegrationUpdateHandler(
         $c->get(IntegrationRepository::class),
         $c->get(FlusherInterface::class),
-        $c->get(WebhookManager::class),
+        $c->get(WebhookHandler::class),
         $c->get(ScriptManager::class),
     ),
 
@@ -70,7 +72,7 @@ return [
 
     WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(),
 
-    WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
+    WebhookHandler::class => fn(ContainerInterface $c) => new WebhookHandler(
         $c->get(ClientConfigurator::class),
         $c->get('config')['webhook']['scopes'],
         $c->get('config')['main']['domain'] . $c->get('config')['webhook']['receivePath'],
@@ -86,6 +88,8 @@ return [
     ),
 
     StoreRepository::class => fn(ContainerInterface $c) => new DoctrineStoreRepository($c->get(EntityManagerInterface::class)),
+
+    CartRepository::class => fn(ContainerInterface $c) => new DoctrineCartRepository($c->get(EntityManagerInterface::class)),
 
     'config' => [
         'main' => [

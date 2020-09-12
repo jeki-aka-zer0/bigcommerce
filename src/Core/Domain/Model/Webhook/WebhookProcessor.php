@@ -6,5 +6,5 @@ namespace Src\Core\Domain\Model\Webhook;
 
 interface WebhookProcessor
 {
-    public function process(): void;
+    public function process(WebhookDto $dto): void;
 }
