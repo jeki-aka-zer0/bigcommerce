@@ -10,7 +10,6 @@ use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
-use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Id;
 
@@ -24,8 +23,6 @@ final class Handler
 
     private FlusherInterface $flusher;
 
-    private WebhookManager $webhookManager;
-
     private StoreExtractor $storeExtractor;
 
     public function __construct(
@@ -33,14 +30,12 @@ final class Handler
         IntegrationRepository $integrations,
         StoreRepository $stores,
         FlusherInterface $flusher,
-        WebhookManager $webhookManager,
         StoreExtractor $storeExtractor
     ) {
         $this->credentials = $credentials;
         $this->integrations = $integrations;
         $this->stores = $stores;
         $this->flusher = $flusher;
-        $this->webhookManager = $webhookManager;
         $this->storeExtractor = $storeExtractor;
     }
 
@@ -59,8 +54,6 @@ final class Handler
         }
 
         $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
-
-        $this->webhookManager->subscribe($integration);
 
         $store = $this->storeExtractor->extract($integration);
 

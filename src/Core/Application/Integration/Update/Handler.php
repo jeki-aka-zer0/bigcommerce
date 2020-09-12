@@ -37,8 +37,7 @@ final class Handler
         // @todo UNSECURE
         $integration = $this->integrationRepository->getByStoreHash(new Hash($command->getStoreHash()));
 
-        // Пока убрал для дебага
-//        $this->webhookManager->subscribe($integration);
+        $this->webhookManager->subscribe($integration);
         $this->scriptManager->addToStore($integration);
 
         $integration->setApiKey($command->getApiKey());

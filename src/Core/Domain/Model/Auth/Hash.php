@@ -12,7 +12,7 @@ final class Hash
 
     public function __construct(string $hash)
     {
-        $this->hash = $hash;
+        $this->hash = trim($hash);
         Assert::notEmpty($hash);
     }
 
@@ -23,6 +23,6 @@ final class Hash
 
     public function __toString(): string
     {
-        return $this->hash;
+        return trim($this->hash);
     }
 }
