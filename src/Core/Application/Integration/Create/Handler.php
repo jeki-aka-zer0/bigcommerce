@@ -67,7 +67,7 @@ final class Handler
 
         // @todo check does it work?
         /*$storeExtractor = new StoreExtractor();
-        $store = new Store($storeExtractor->getId(), (array)$storeExtractor->getStore());*/
+        $store = new Store($storeExtractor->getId(), $integration, (array)$storeExtractor->getStore());*/
 
         $this->integrations->add($integration);
 //        $this->stores->add($store);

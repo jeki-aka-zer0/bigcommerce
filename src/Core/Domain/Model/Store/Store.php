@@ -6,6 +6,8 @@ namespace Src\Core\Domain\Model\Store;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Src\Bc\Domain\Model\Player\Player;
+use Src\Core\Domain\Model\Auth\Integration;
 
 /**
  * @ORM\Entity
@@ -20,6 +22,13 @@ final class Store
     private string $id;
 
     /**
+     * @var Integration
+     * @ORM\ManyToOne(targetEntity="Src\Core\Domain\Model\Auth\Integration")
+     * @ORM\JoinColumn(name="integration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     */
+    private Integration $integration;
+
+    /**
      * @var array
      * @ORM\Column(type="json")
      */
@@ -31,10 +40,16 @@ final class Store
      */
     private DateTimeImmutable $createdAt;
 
-    public function __construct(string $id, array $payload)
+    public function __construct(string $id, Integration $integration, array $payload)
     {
         $this->id = $id;
+        $this->integration = $integration;
         $this->payload = $payload;
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function getIntegration(): Integration
+    {
+        return $this->integration;
     }
 }

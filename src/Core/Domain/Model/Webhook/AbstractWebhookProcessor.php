@@ -6,13 +6,10 @@ namespace Src\Core\Domain\Model\Webhook;
 
 abstract class AbstractWebhookProcessor implements WebhookProcessor
 {
-    protected string $scope;
+    protected WebhookDto $dto;
 
-    protected array $data;
-
-    public function __construct(string $scope, array $data)
+    public function __construct(WebhookDto $dto)
     {
-        $this->scope = $scope;
-        $this->data = $data;
+        $this->dto = $dto;
     }
 }
