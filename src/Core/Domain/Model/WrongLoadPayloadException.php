@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Domain\Model\Load;
+namespace Src\Core\Domain\Model;
 
-use Src\Core\Domain\Model\CommonRuntimeException;
 use Throwable;
 
 final class WrongLoadPayloadException extends CommonRuntimeException

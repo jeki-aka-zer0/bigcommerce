@@ -22,7 +22,7 @@ use Symfony\Component\Templating\Helper\SlotsHelper;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
-use Src\Core\Domain\Model\Load\LoadBodyExtractor;
+use Src\Core\Domain\Model\LoadBodyExtractor;
 
 return [
     ResponseFactoryInterface::class => fn() => new ResponseFactory(),

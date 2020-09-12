@@ -2,29 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Application\Integration\View;
+namespace Src\Core\Application\Integration\Uninstall;
 
 use Src\Core\Domain\Model\Auth\Hash;
-use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\LoadBodyExtractor;
 use Src\Core\Domain\Model\WrongLoadPayloadException;
+use Src\Core\Infrastructure\Domain\Model\DoctrineRemover;
 
 final class Handler
 {
-
     private LoadBodyExtractor $loadBodyExtractor;
 
     private IntegrationRepository $integrationRepository;
 
-    private ?Integration $integration;
+    private DoctrineRemover $doctrineRemover;
 
-    private ?string $storeHash;
-
-    public function __construct(LoadBodyExtractor $loadBodyExtractor, IntegrationRepository $integrationRepository)
-    {
+    public function __construct(
+        LoadBodyExtractor $loadBodyExtractor,
+        IntegrationRepository $integrationRepository,
+        DoctrineRemover $doctrineRemover
+    ) {
         $this->loadBodyExtractor = $loadBodyExtractor;
         $this->integrationRepository = $integrationRepository;
+        $this->doctrineRemover = $doctrineRemover;
     }
 
     public function handle(Command $command): void
@@ -38,17 +39,10 @@ final class Handler
 
         $integration = $this->integrationRepository->getByStoreHash(new Hash($storeHash));
 
-        $this->integration = $integration;
-        $this->storeHash = $storeHash;
-    }
+        if (null === $integration) {
+            throw new WrongLoadPayloadException();
+        }
 
-    public function getIntegration(): Integration
-    {
-        return $this->integration;
-    }
-
-    public function getStoreHash(): string
-    {
-        return $this->storeHash;
+        $this->doctrineRemover->remove($integration);
     }
 }

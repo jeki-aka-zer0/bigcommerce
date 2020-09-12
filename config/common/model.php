@@ -7,20 +7,27 @@ use Psr\Container\ContainerInterface;
 use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
+use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
+use Src\Core\Domain\Model\Webhook\ScriptManager;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
-use Src\Core\Domain\Model\Load\LoadBodyExtractor;
+use Src\Core\Domain\Model\LoadBodyExtractor;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
+use Src\Core\Infrastructure\Domain\Model\DoctrineRemover;
 use Src\Core\Infrastructure\Domain\Model\Store\DoctrineStoreRepository;
 
 return [
     FlusherInterface::class => fn(ContainerInterface $c) => new DoctrineFlusher(
+        $c->get(EntityManagerInterface::class),
+    ),
+
+    DoctrineRemover::class => fn(ContainerInterface $c) => new DoctrineRemover(
         $c->get(EntityManagerInterface::class),
     ),
 
@@ -51,11 +58,22 @@ return [
         $c->get(FlusherInterface::class),
         $c->get(ClientConfigurator::class),
         $c->get(WebhookManager::class),
+        $c->get(ScriptManager::class),
+    ),
+
+    IntegrationUninstallHandler::class => fn(ContainerInterface $c) => new IntegrationUninstallHandler(
+        $c->get(LoadBodyExtractor::class),
+        $c->get(IntegrationRepository::class),
+        $c->get(DoctrineRemover::class),
     ),
 
     WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
         $c->get('config')['webhook']['scopes'],
         $c->get('config')['main']['domain'] . $c->get('config')['webhook']['receivePath'],
+    ),
+
+    ScriptManager::class => fn(ContainerInterface $c) => new ScriptManager(
+        $c->get('config')['main']['domain'] . $c->get('config')['script']['jsPath'],
     ),
 
     StoreRepository::class => fn(ContainerInterface $c) => new DoctrineStoreRepository($c->get(EntityManagerInterface::class)),
@@ -67,6 +85,9 @@ return [
         'webhook' => [
             'receivePath' => '/big-commerce/webhook/receive',
             'scopes' => Scopes::ALL,
+        ],
+        'script' => [
+            'jsPath' => '/bigcommerce.js',
         ],
         'credentials' => [
             'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',

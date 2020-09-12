@@ -6,9 +6,9 @@ namespace Src\Core\Application\Integration\Update;
 
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Webhook\ScriptManager;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
-use Bigcommerce\Api\Client;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Handler
@@ -21,12 +21,20 @@ final class Handler
 
     private WebhookManager $webhookManager;
 
-    public function __construct(IntegrationRepository $integrationRepository, FlusherInterface $flusher, ClientConfigurator $clientConfigurator, WebhookManager $webhookManager)
-    {
+    private ScriptManager $scriptManager;
+
+    public function __construct(
+        IntegrationRepository $integrationRepository,
+        FlusherInterface $flusher,
+        ClientConfigurator $clientConfigurator,
+        WebhookManager $webhookManager,
+        ScriptManager $scriptManager
+    ) {
         $this->integrationRepository = $integrationRepository;
         $this->flusher = $flusher;
         $this->clientConfigurator = $clientConfigurator;
         $this->webhookManager = $webhookManager;
+        $this->scriptManager = $scriptManager;
     }
 
     public function handle(Command $command): void
@@ -37,18 +45,7 @@ final class Handler
         $this->clientConfigurator->configureV3($integration);
 
         $this->webhookManager->subscribe();
-
-        // @todo errors
-        // @todo make client
-        Client::createResource('/content/scripts', [
-            'name' => 'ManyChat Script',
-            'src' => 'https://env-6234666.jelastic.regruhosting.ru/bigcommerce.js', // @todo config
-            'auto_uninstall' => true,
-            'load_method' => 'default',
-            'location' => 'footer',
-            'visibility' => 'all_pages',
-            'kind' => 'src',
-        ]);
+        $this->scriptManager->addToStore();
 
         $integration->setApiKey($command->getApiKey());
 
