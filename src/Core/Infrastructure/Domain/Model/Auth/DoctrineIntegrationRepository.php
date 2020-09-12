@@ -51,8 +51,8 @@ final class DoctrineIntegrationRepository implements IntegrationRepository
         return $integration;
     }
 
-    public function add(Integration $game): void
+    public function add(Integration $integration): void
     {
-        $this->em->persist($game);
+        $this->em->persist($integration);
     }
 }

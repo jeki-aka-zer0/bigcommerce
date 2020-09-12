@@ -20,5 +20,5 @@ interface IntegrationRepository
      */
     public function getByStoreHash(Hash $storeHash): Integration;
 
-    public function add(Integration $game): void;
+    public function add(Integration $integration): void;
 }

@@ -9,6 +9,7 @@ use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\Load\LoadBodyExtractor;
@@ -16,6 +17,7 @@ use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
+use Src\Core\Infrastructure\Domain\Model\Store\DoctrineStoreRepository;
 
 return [
     FlusherInterface::class => fn(ContainerInterface $c) => new DoctrineFlusher(
@@ -28,13 +30,12 @@ return [
         $c->get('config')['main']['domain'] . $c->get('config')['credentials']['redirectPath'],
     ),
 
-    IntegrationRepository::class => fn(ContainerInterface $c) => new DoctrineIntegrationRepository(
-        $c->get(EntityManagerInterface::class),
-    ),
+    IntegrationRepository::class => fn(ContainerInterface $c) => new DoctrineIntegrationRepository($c->get(EntityManagerInterface::class)),
 
     IntegrationCreateHandler::class => fn(ContainerInterface $c) => new IntegrationCreateHandler(
         $c->get(CredentialsDto::class),
         $c->get(IntegrationRepository::class),
+        $c->get(StoreRepository::class),
         $c->get(FlusherInterface::class),
         $c->get(ClientConfigurator::class),
         $c->get(WebhookManager::class),
@@ -56,6 +57,8 @@ return [
         $c->get('config')['webhook']['scopes'],
         $c->get('config')['main']['domain'] . $c->get('config')['webhook']['receivePath'],
     ),
+
+    StoreRepository::class => fn(ContainerInterface $c) => new DoctrineStoreRepository($c->get(EntityManagerInterface::class)),
 
     'config' => [
         'main' => [
