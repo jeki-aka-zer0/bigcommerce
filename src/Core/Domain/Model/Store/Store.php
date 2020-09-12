@@ -18,6 +18,7 @@ final class Store
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @ORM\Id
      */
     private string $id;
 

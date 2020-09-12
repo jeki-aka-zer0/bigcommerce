@@ -2,6 +2,7 @@ version: '3'
 services:
 
   nginx:
+    container_name: bigcommerce_nginx
     build:
       context: ./docker
       dockerfile: nginx.docker
@@ -15,6 +16,7 @@ services:
       - db
 
   php-fpm:
+    container_name: bigcommerce_php_fpm
     build:
       context: ./docker
       dockerfile: php-fpm.docker
@@ -24,6 +26,7 @@ services:
       - db
 
   php-cli:
+    container_name: bigcommerce_php_cli
     build:
       context: ./docker
       dockerfile: php-cli.docker
@@ -35,6 +38,7 @@ services:
     tty: true
 
   db:
+    container_name: bigcommerce_db
     image: postgres
     restart: always
     volumes:
