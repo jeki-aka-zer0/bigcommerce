@@ -10,6 +10,7 @@ use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
 use Src\Core\Domain\Model\Script\ScriptManager;
@@ -45,6 +46,7 @@ return [
         $c->get(StoreRepository::class),
         $c->get(FlusherInterface::class),
         $c->get(WebhookManager::class),
+        $c->get(StoreExtractor::class),
     ),
 
     IntegrationViewHandler::class => fn(ContainerInterface $c) => new IntegrationViewHandler(
@@ -74,6 +76,10 @@ return [
     ScriptManager::class => fn(ContainerInterface $c) => new ScriptManager(
         $c->get(ClientConfigurator::class),
         $c->get('config')['main']['domain'] . $c->get('config')['script']['jsPath'],
+    ),
+
+    StoreExtractor::class => fn(ContainerInterface $c) => new StoreExtractor(
+        $c->get(ClientConfigurator::class),
     ),
 
     StoreRepository::class => fn(ContainerInterface $c) => new DoctrineStoreRepository($c->get(EntityManagerInterface::class)),

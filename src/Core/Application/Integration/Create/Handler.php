@@ -8,7 +8,6 @@ use Src\Core\Domain\Model\Auth\AuthTokenExtractor;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Store\Store;
 use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
@@ -27,18 +26,22 @@ final class Handler
 
     private WebhookManager $webhookManager;
 
+    private StoreExtractor $storeExtractor;
+
     public function __construct(
         CredentialsDto $credentials,
         IntegrationRepository $integrations,
         StoreRepository $stores,
         FlusherInterface $flusher,
-        WebhookManager $webhookManager
+        WebhookManager $webhookManager,
+        StoreExtractor $storeExtractor
     ) {
         $this->credentials = $credentials;
         $this->integrations = $integrations;
         $this->stores = $stores;
         $this->flusher = $flusher;
         $this->webhookManager = $webhookManager;
+        $this->storeExtractor = $storeExtractor;
     }
 
     public function handle(Command $command): void
@@ -57,11 +60,9 @@ final class Handler
 
         $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
 
-        // @todo тут оно нам нужно? Мы еще не знаем pageId
-//        $this->webhookManager->subscribe($integration);
+        $this->webhookManager->subscribe($integration);
 
-        $storeExtractor = new StoreExtractor();
-        $store = new Store($storeExtractor->getId(), $integration, (array)$storeExtractor->getStore());
+        $store = $this->storeExtractor->extract($integration);
 
         $this->integrations->add($integration);
         $this->stores->add($store);
