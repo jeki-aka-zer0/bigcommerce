@@ -65,7 +65,7 @@ final class Integration
 
     public function getAccountId(): ?int
     {
-        return explode(':', $this->apiKey)[0];
+        return explode(':', $this->getApiKey())[0];
     }
 
     public function getAccessToken(): string
