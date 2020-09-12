@@ -57,7 +57,8 @@ final class Handler
 
         $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
 
-        $this->webhookManager->subscribe($integration);
+        // @todo тут оно нам нужно? Мы еще не знаем pageId
+//        $this->webhookManager->subscribe($integration);
 
         $storeExtractor = new StoreExtractor();
         $store = new Store($storeExtractor->getId(), $integration, (array)$storeExtractor->getStore());
