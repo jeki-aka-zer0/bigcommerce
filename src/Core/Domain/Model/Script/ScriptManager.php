@@ -28,7 +28,7 @@ final class ScriptManager
         ]);
 
         if (false === $response) {
-            throw new CreateScriptException(Client::getLastError());
+            throw new CreateScriptException(json_encode(Client::getLastError()));
         }
     }
 }
