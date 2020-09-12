@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Src\Core\Domain\Model\Webhook;
+namespace Src\Core\Domain\Model\Script;
 
 use Bigcommerce\Api\Client;
-use Src\Core\Domain\Model\Script\CreateScriptException;
 
 final class ScriptManager
 {

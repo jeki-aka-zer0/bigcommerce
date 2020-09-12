@@ -12,7 +12,7 @@ use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
-use Src\Core\Domain\Model\Webhook\ScriptManager;
+use Src\Core\Domain\Model\Script\ScriptManager;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\LoadBodyExtractor;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
