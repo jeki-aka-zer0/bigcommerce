@@ -6,7 +6,7 @@ namespace Src\Core\Application\Integration\Update;
 
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Webhook\ScriptManager;
+use Src\Core\Domain\Model\Script\ScriptManager;
 use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
