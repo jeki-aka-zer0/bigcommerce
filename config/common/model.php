@@ -88,7 +88,7 @@ return [
 
     'config' => [
         'main' => [
-            'domain' => 'https://env-6234666.jelastic.regruhosting.ru',
+            'domain' => 'https://bigcommerce-manychat.site',
         ],
         'webhook' => [
             'receivePath' => '/big-commerce/webhook/receive',
