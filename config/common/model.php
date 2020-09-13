@@ -8,11 +8,13 @@ use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
+use Src\Core\Application\Integration\Link\Handler as IntegrationLinkHandler;
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\Job\JobRepository;
+use Src\Core\Domain\Model\CartSession\CartSessionRepository;
 use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
@@ -25,6 +27,7 @@ use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Infrastructure\Domain\Model\DoctrineRemover;
+use Src\Core\Infrastructure\Domain\Model\CartSession\DoctrineCartSessionRepository;
 use Src\Core\Infrastructure\Domain\Model\Job\DoctrineJobRepository;
 use Src\Core\Infrastructure\Domain\Model\Store\DoctrineStoreRepository;
 
@@ -72,6 +75,11 @@ return [
         $c->get(FlusherInterface::class),
     ),
 
+    IntegrationLinkHandler::class => fn(ContainerInterface $c) => new IntegrationLinkHandler(
+        $c->get(CartSessionRepository::class),
+        $c->get(FlusherInterface::class),
+    ),
+
     WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(),
 
     WebhookHandler::class => fn(ContainerInterface $c) => new WebhookHandler(
@@ -92,6 +100,8 @@ return [
     StoreRepository::class => fn(ContainerInterface $c) => new DoctrineStoreRepository($c->get(EntityManagerInterface::class)),
 
     CartRepository::class => fn(ContainerInterface $c) => new DoctrineCartRepository($c->get(EntityManagerInterface::class)),
+
+    CartSessionRepository::class => fn(ContainerInterface $c) => new DoctrineCartSessionRepository($c->get(EntityManagerInterface::class)),
 
     JobRepository::class => fn(ContainerInterface $c) => new DoctrineJobRepository($c->get(EntityManagerInterface::class)),
 

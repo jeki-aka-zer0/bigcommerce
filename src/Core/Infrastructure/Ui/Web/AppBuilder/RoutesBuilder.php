@@ -10,6 +10,7 @@ use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Auth\Form as AuthForm;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Load\Form as LoadForm;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Update\Form as UpdateForm;
 use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Uninstall\Form as UninstallForm;
+use Src\Core\Infrastructure\Ui\Web\Action\BigCommerce\Link\Form as LinkForm;
 use Src\Core\Infrastructure\Ui\Web\Validator\Validator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
@@ -22,6 +23,8 @@ final class RoutesBuilder extends AbstractBuilder
         $validator = $this->getContainer()->get(Validator::class);
 
         $this->getApp()->get('/', Action\Home\Action::class . '::handle');
+
+        $this->getApp()->get('/test', Action\Test\Action::class . '::handle');
 
         $this->getApp()->group(
             '/big-commerce',
@@ -37,6 +40,9 @@ final class RoutesBuilder extends AbstractBuilder
 
                 $group->get('/uninstall', Action\BigCommerce\Uninstall\Action::class . '::handle')
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new UninstallForm($r)))->process($r, $h));
+
+                $group->get('/link', Action\BigCommerce\Link\Action::class . '::handle')
+                    ->add(fn(Request $r, Handler $h) => (new Validation($validator, new LinkForm($r)))->process($r, $h));
 
                 $group->post('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
             }
