@@ -22,6 +22,8 @@ final class Handler
 
     public function handle(Command $command): void
     {
+        // check accountId and storeHash linking
+
         $cartSession = new CartSession($command->getCartId(), $command->getSessionId(), $command->getAccountId(), $command->getStoreHash());
 
         $this->cartSessionRepository->add($cartSession);
