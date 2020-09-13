@@ -1,5 +1,13 @@
+// bigcommerce_manychat_mc_domain - домен куда делать pixel запросы
+// bigcommerce_manychat_widget_domain - домен от куда грузить виджеты
+
 (function () {
     const params = parseParams();
+    const mcDomain = localStorage.getItem('bigcommerce_manychat_mc_domain');
+
+    if (mcDomain) {
+        window.__MCHT_BACKEND_PATH__ = mcDomain;
+    }
 
     loadScript(params.account_id);
     linkCart(params.account_id, params.store_hash);
@@ -22,7 +30,7 @@
 
     function loadScript(accountId) {
         const customDomain = localStorage.getItem('bigcommerce_manychat_widget_domain');
-        const defaultDomain = 'widgetdm.manychat.io';
+        const defaultDomain = 'widget.manychat.com';
 
         const mcScript = document.createElement("script");
         mcScript.src = 'https://' + (customDomain || defaultDomain) + '/' + accountId + '.js';
