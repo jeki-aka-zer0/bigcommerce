@@ -8,11 +8,11 @@ final class Command
 {
     private string $score;
 
-    private string $storeId;
+    private int $storeId;
 
     private array $data;
 
-    public function __construct(string $score, string $storeId, array $data)
+    public function __construct(string $score, int $storeId, array $data)
     {
         $this->score = $score;
         $this->storeId = $storeId;
@@ -24,7 +24,7 @@ final class Command
         return $this->score;
     }
 
-    public function getStoreId(): string
+    public function getStoreId(): int
     {
         return $this->storeId;
     }

@@ -15,10 +15,15 @@ POST https://127.0.0.1/big-commerce/webhook/receive
 Content-Type: application/json
 
 {
-  "scope": "store/cart/created",
+  "created_at": 1600013349,
+  "store_id": "1001380158",
+  "producer": "stores/t69qaobe3e",
+  "scope": "store/cart/lineItem/updated",
+  "hash": "8057e97b2cb64a4d80d2651513bb061366a75440",
   "data": {
-    "type": "cart",
-    "id": "d30016e2-23c0-4a90-884f-2e92ac135476"
+    "type": "cart_line_item",
+    "id": "4e273710-b26a-441d-b2aa-2874789d4b22",
+    "cartId": "95a9231a-3ef7-4ccd-bbc7-f3e21cd6c842"
   }
 }
 

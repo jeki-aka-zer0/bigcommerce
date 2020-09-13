@@ -15,11 +15,11 @@ use Src\Core\Domain\Model\Auth\Integration;
 final class Store
 {
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
+     * @var int
+     * @ORM\Column(type="integer")
      * @ORM\Id
      */
-    private string $id;
+    private int $id;
 
     /**
      * @var Integration
@@ -40,7 +40,7 @@ final class Store
      */
     private DateTimeImmutable $createdAt;
 
-    public function __construct(string $id, Integration $integration, array $payload)
+    public function __construct(int $id, Integration $integration, array $payload)
     {
         $this->id = $id;
         $this->integration = $integration;

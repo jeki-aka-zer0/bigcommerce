@@ -34,8 +34,8 @@ final class StoreExtractor
         return $this->store;
     }
 
-    public function getId(): string
+    public function getId(): int
     {
-        return (string)$this->getStore()->id;
+        return (int)$this->getStore()->store_id;
     }
 }

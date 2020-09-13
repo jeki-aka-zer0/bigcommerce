@@ -6,15 +6,15 @@ namespace Src\Core\Domain\Model\Store;
 
 interface StoreRepository
 {
-    public function findById(string $id): ?Store;
+    public function findById(int $id): ?Store;
 
     /**
-     * @param string $id
+     * @param int $id
      *
      * @return Store
      * @throws StoreNotFoundException
      */
-    public function getById(string $id): Store;
+    public function getById(int $id): Store;
 
     public function add(Store $store): void;
 }

@@ -22,7 +22,7 @@ final class DoctrineStoreRepository implements StoreRepository
         $this->repo = $em->getRepository(Store::class);
     }
 
-    public function findById(string $id): ?Store
+    public function findById(int $id): ?Store
     {
         /** @var Store $store */
         $store = $this->repo->findOneBy(['id' => $id]);
@@ -30,7 +30,7 @@ final class DoctrineStoreRepository implements StoreRepository
         return $store;
     }
 
-    public function getById(string $id): Store
+    public function getById(int $id): Store
     {
         $store = $this->findById($id);
 

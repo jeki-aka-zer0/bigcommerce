@@ -9,9 +9,9 @@ use Throwable;
 
 final class StoreNotFoundException extends CommonRuntimeException
 {
-    public function __construct(string $storeId, $code = 0, Throwable $previous = null)
+    public function __construct(int $storeId, $code = 0, Throwable $previous = null)
     {
-        $message = sprintf('Store not found: %s', $storeId);
+        $message = sprintf('Store not found: %d', $storeId);
 
         parent::__construct($message, $code, $previous);
     }
