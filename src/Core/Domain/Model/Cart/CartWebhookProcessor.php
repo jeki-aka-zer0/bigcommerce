@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Src\Core\Domain\Model\Cart;
 
+use Bigcommerce\Api\Client;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Webhook\WebhookDto;
 use Src\Core\Domain\Model\Webhook\WebhookProcessor;
@@ -24,7 +25,12 @@ final class CartWebhookProcessor implements WebhookProcessor
     {
         /** @var CartData $data */
         $data = $dto->getData();
-        $cartRaw = []; // @todo get cart by API
+        $cartRaw = Client::getConnection()->get(sprintf('%s/cart/%s', Client::$api_path, $data->getCartId()));
+
+        $log = new \Monolog\Logger('wh');
+        $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/cart.log'));
+        $log->warning(serialize($cartRaw).serialize($dto->getData()));
+
         $cart = $this->carts->findById($data->getCartId());
 
         if (null === $cart) {

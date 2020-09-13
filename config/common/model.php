@@ -19,8 +19,9 @@ use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
 use Src\Core\Domain\Model\Script\ScriptManager;
-use Src\Core\Domain\Model\Webhook\WebhookHandler;
 use Src\Core\Domain\Model\LoadBodyExtractor;
+use Src\Core\Domain\Model\Webhook\WebhookFactory;
+use Src\Core\Domain\Model\Webhook\WebhookManager;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineIntegrationRepository;
 use Src\Core\Infrastructure\Domain\Model\Cart\DoctrineCartRepository;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
@@ -64,7 +65,7 @@ return [
     IntegrationUpdateHandler::class => fn(ContainerInterface $c) => new IntegrationUpdateHandler(
         $c->get(IntegrationRepository::class),
         $c->get(FlusherInterface::class),
-        $c->get(WebhookHandler::class),
+        $c->get(WebhookManager::class),
         $c->get(ScriptManager::class),
     ),
 
@@ -80,9 +81,13 @@ return [
         $c->get(FlusherInterface::class),
     ),
 
-    WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(),
+    WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(
+        $c->get(StoreRepository::class),
+        $c->get(IntegrationRepository::class),
+        $c->get(WebhookFactory::class),
+    ),
 
-    WebhookHandler::class => fn(ContainerInterface $c) => new WebhookHandler(
+    WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(
         $c->get(ClientConfigurator::class),
         $c->get('config')['webhook']['scopes'],
         $c->get('config')['main']['domain'] . $c->get('config')['webhook']['receivePath'],

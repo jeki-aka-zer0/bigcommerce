@@ -7,8 +7,8 @@ namespace Src\Core\Application\Integration\Update;
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Script\ScriptManager;
-use Src\Core\Domain\Model\Webhook\WebhookHandler;
 use Src\Core\Domain\Model\FlusherInterface;
+use Src\Core\Domain\Model\Webhook\WebhookManager;
 
 final class Handler
 {
@@ -16,14 +16,14 @@ final class Handler
 
     private IntegrationRepository $integrationRepository;
 
-    private WebhookHandler $webhookManager;
+    private WebhookManager $webhookManager;
 
     private ScriptManager $scriptManager;
 
     public function __construct(
         IntegrationRepository $integrationRepository,
         FlusherInterface $flusher,
-        WebhookHandler $webhookManager,
+        WebhookManager $webhookManager,
         ScriptManager $scriptManager
     ) {
         $this->integrationRepository = $integrationRepository;

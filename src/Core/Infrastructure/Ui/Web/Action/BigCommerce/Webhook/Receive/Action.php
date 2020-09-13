@@ -28,9 +28,8 @@ final class Action implements RequestHandlerInterface
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/wh.log'));
         $log->warning(serialize($body));
 
-//        $command = new Command($body['score'], $body['data']);
-//
-//        $this->handler->handle($command);
+        $command = new Command($body['score'], $body['data']);
+        $this->handler->handle($command);
 
         return new EmptyResponse();
     }
