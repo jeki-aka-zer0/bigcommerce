@@ -6,6 +6,7 @@ namespace Src\Core\Domain\Model\Cart;
 
 use Bigcommerce\Api\Client;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\CommonRuntimeException;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Webhook\WebhookDto;
 use Src\Core\Domain\Model\Webhook\WebhookProcessor;
@@ -36,10 +37,13 @@ final class CartWebhookProcessor implements WebhookProcessor
         $integration = $this->integrations->getByStoreHash($dto->getHash());
         $this->clientConfigurator->configureV3($integration);
         $cartRaw = Client::getConnection()->get(sprintf('%s/cart/%s', Client::$api_path, $data->getCartId()));
+        if (!$cartRaw) {
+            throw new CommonRuntimeException('Wrong cart response: ' . Client::getLastError());
+        }
 
         $log = new \Monolog\Logger('wh');
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/cart.log'));
-        $log->warning(serialize($cartRaw).serialize($dto->getData()));
+        $log->warning(serialize($cartRaw) . serialize($dto->getData()));
 
         $cart = $this->carts->findById($data->getCartId());
 
