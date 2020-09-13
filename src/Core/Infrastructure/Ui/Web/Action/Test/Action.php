@@ -34,6 +34,8 @@ final class Action implements RequestHandlerInterface
         $this->clientConfigurator->configureV3($integration);
 
         $cart = Client::getResource('/carts/' . $cartId);
+
+        echo '<pre>';
         var_dump($cart);
         var_dump(Client::getLastError());
     }
