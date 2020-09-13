@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Infrastructure\Ui\Web\Action\Test;
 
 use Bigcommerce\Api\Client;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -37,6 +38,7 @@ final class Action implements RequestHandlerInterface
 
         echo '<pre>';
         var_dump($cart);
-        var_dump(Client::getLastError());
+
+        return new HtmlResponse('');
     }
 }
