@@ -29,6 +29,7 @@ return [
 
     Action\BigCommerce\Update\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Update\Action(
         $c->get(IntegrationUpdateHandler::class),
+        $c->get(PhpEngine::class),
     ),
 
     Action\BigCommerce\Load\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Load\Action(

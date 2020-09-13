@@ -10,14 +10,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Src\Core\Application\Integration\Update\Handler;
 use Src\Core\Application\Integration\Update\Command;
+use Symfony\Component\Templating\PhpEngine;
 
 class Action implements RequestHandlerInterface
 {
     private Handler $handler;
 
-    public function __construct(Handler $handler)
+    private PhpEngine $phpEngine;
+
+    public function __construct(Handler $handler, PhpEngine $phpEngine)
     {
         $this->handler = $handler;
+        $this->phpEngine = $phpEngine;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -27,6 +31,6 @@ class Action implements RequestHandlerInterface
 
         $this->handler->handle($command);
 
-        return new HtmlResponse('<h1>The application is installed and configured</h1>');
+        return new HtmlResponse($this->phpEngine->render('BigCommerce/Update/view.phtml'));
     }
 }
