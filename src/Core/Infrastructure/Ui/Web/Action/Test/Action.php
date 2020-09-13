@@ -4,33 +4,38 @@ declare(strict_types=1);
 
 namespace Src\Core\Infrastructure\Ui\Web\Action\Test;
 
-use Laminas\Diactoros\Response\HtmlResponse;
+use Bigcommerce\Api\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Script\ScriptManager;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Action implements RequestHandlerInterface
 {
     private IntegrationRepository $integrationRepository;
 
-    private ScriptManager $scriptManager;
+    private ScriptManager $clientConfigurator;
 
-    public function __construct(IntegrationRepository $integrationRepository, ScriptManager $scriptManager)
+    public function __construct(IntegrationRepository $integrationRepository, ClientConfigurator $clientConfigurator)
     {
         $this->integrationRepository = $integrationRepository;
-        $this->scriptManager = $scriptManager;
+        $this->clientConfigurator = $clientConfigurator;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $storeHash = $request->getQueryParams()['store_hash'];
-        $integration = $this->integrationRepository->getByStoreHash(new Hash($storeHash));
+        $cartId = '56f0eb3a-e6ed-46ae-9ce2-fe67a7393226';
+        $storeHash = 'li15qvqduw';
 
-        $this->scriptManager->addToStore($integration);
+        $integration = $this->integrationRepository->findByStoreHash(new Hash($storeHash));
 
-        return new HtmlResponse('Ok');
+        $this->clientConfigurator->configureV3($integration);
+
+        $cart = Client::getResource('/carts/' . $cartId);
+        var_dump($cart);
+        var_dump(Client::getLastError());
     }
 }
