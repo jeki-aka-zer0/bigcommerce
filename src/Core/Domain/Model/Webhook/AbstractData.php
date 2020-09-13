@@ -8,17 +8,12 @@ use Webmozart\Assert\Assert;
 
 abstract class AbstractData implements Data
 {
-    private string $storeId;
+    protected string $type;
 
     public function __construct(array $data)
     {
-        $this->storeId = (string)($data[self::KEY_STORE_ID] ?? '');
+        $this->type = (string)($data[self::KEY_TYPE] ?? '');
 
-        Assert::notEmpty($this->storeId);
-    }
-
-    public function getStoreId(): string
-    {
-        return $this->storeId;
+        Assert::notEmpty($this->type);
     }
 }

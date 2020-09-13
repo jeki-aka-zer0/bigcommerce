@@ -20,10 +20,9 @@ final class CartData extends AbstractData
         parent::__construct($data);
 
         $this->cartId = (string)($data[self::KEY_CART_ID] ?? '');
-        $type = (string)($data[self::KEY_TYPE] ?? '');
 
         Assert::notEmpty($this->cartId);
-        Assert::eq($type, self::TYPE_CART);
+        Assert::eq($this->type, self::TYPE_CART);
     }
 
     public function getCartId(): string

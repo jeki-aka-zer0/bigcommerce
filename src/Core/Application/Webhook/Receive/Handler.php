@@ -27,7 +27,7 @@ final class Handler
     public function handle(Command $command): void
     {
         $data = $this->processorFactory->getData($command->getScore(), $command->getData());
-        $store = $this->stores->getById($data->getStoreId());
+        $store = $this->stores->getById($command->getStoreId());
         $integration = $this->integrations->getByStoreHash($store->getIntegration()->getStoreHash());
         $dto = new WebhookDto($command->getScore(), $data, $store, $integration);
 
