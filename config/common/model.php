@@ -86,8 +86,10 @@ return [
         $c->get(StoreRepository::class),
         $c->get(IntegrationRepository::class),
         new WebhookFactory(new CartWebhookProcessor(
+            $c->get(IntegrationRepository::class),
             $c->get(CartRepository::class),
             $c->get(FlusherInterface::class),
+            $c->get(ClientConfigurator::class),
         )),
     ),
 

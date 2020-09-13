@@ -5,26 +5,36 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Cart;
 
 use Bigcommerce\Api\Client;
+use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Domain\Model\Webhook\WebhookDto;
 use Src\Core\Domain\Model\Webhook\WebhookProcessor;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class CartWebhookProcessor implements WebhookProcessor
 {
+    private IntegrationRepository $integrations;
+
     private CartRepository $carts;
 
     private FlusherInterface $flusher;
 
-    public function __construct(CartRepository $carts, FlusherInterface $flusher)
+    private ClientConfigurator $clientConfigurator;
+
+    public function __construct(IntegrationRepository $integrations, CartRepository $carts, FlusherInterface $flusher, ClientConfigurator $clientConfigurator)
     {
+        $this->integrations = $integrations;
         $this->carts = $carts;
         $this->flusher = $flusher;
+        $this->clientConfigurator = $clientConfigurator;
     }
 
     public function process(WebhookDto $dto): void
     {
         /** @var CartData $data */
         $data = $dto->getData();
+        $integration = $this->integrations->getByStoreHash($dto->getHash());
+        $this->clientConfigurator->configureV3($integration);
         $cartRaw = Client::getConnection()->get(sprintf('%s/cart/%s', Client::$api_path, $data->getCartId()));
 
         $log = new \Monolog\Logger('wh');
