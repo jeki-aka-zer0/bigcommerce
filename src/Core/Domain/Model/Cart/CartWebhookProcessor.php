@@ -43,7 +43,7 @@ final class CartWebhookProcessor implements WebhookProcessor
 
         $log = new \Monolog\Logger('wh');
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/cart.log'));
-        $log->warning(serialize($cartRaw) . serialize($dto->getData()));
+        $log->warning(serialize($cartRaw));
 
         $cart = $this->carts->findById($data->getCartId());
 
