@@ -30,7 +30,7 @@
 
     function loadScript(accountId) {
         const customDomain = localStorage.getItem('bigcommerce_manychat_widget_domain');
-        const defaultDomain = 'widgetdm.manychat.io';
+        const defaultDomain = 'widget.manychat.com';
 
         const mcScript = document.createElement("script");
         mcScript.src = 'https://' + (customDomain || defaultDomain) + '/' + accountId + '.js';
