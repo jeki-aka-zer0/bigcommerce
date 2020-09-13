@@ -24,6 +24,7 @@ return [
 
     Action\BigCommerce\Auth\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Auth\Action(
         $c->get(IntegrationCreateHandler::class),
+        $c->get(PhpEngine::class),
     ),
 
     Action\BigCommerce\Update\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Update\Action(

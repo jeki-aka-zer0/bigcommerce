@@ -11,11 +11,17 @@ declare(strict_types=1);
 </script>
 
 <?php if (!empty($integration->getApiKey())) { ?>
-    <h1>The application is installed and configured</h1>
+    <div style="text-align: center;">
+        <h1 style="margin-top: 136px;">The application is installed and configured</h1>
+        <p></p>
+    </div>
 <?php } else { ?>
-    <form action="/big-commerce/update" method="post">
-        <input type="text" name="api_key">
-        <input type="hidden" name="store_hash" value="<?php echo $storeHash ?>">
-        <button type="submit">Send</button>
-    </form>
+    <div style="text-align: center;">
+        <h1 style="margin-top: 136px;">Install App to ManyChat account and insert Api Key to link the store</h1>
+        <form action="/big-commerce/update" method="post">
+            <input type="text" name="api_key">
+            <input type="hidden" name="store_hash" value="<?php echo $storeHash ?>">
+            <button type="submit">Link</button>
+        </form>
+    </div>
 <?php } ?>
