@@ -36,29 +36,31 @@
             return;
         }
 
-        const sessionId = window.MC_PIXEL?.sessionData?.sessionId;
-        if (!sessionId) {
-            console.log('bigcommerce-manychat: no sessionId');
-            return;
-        }
+        window.mcAsyncInit = function() {
+            const sessionId = window.MC_PIXEL?.sessionData?.sessionId;
+            if (!sessionId) {
+                console.log('bigcommerce-manychat: no sessionId');
+                return;
+            }
 
-        fetch('/api/storefront/cart')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (carts) {
-                const cartId = carts[0]?.id;
+            fetch('/api/storefront/cart')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (carts) {
+                    const cartId = carts[0]?.id;
 
-                if (!cartId) {
-                    return;
-                }
+                    if (!cartId) {
+                        return;
+                    }
 
-                const url = 'https://bigcommerce-manychat.site/big-commerce/link?cart_id=' + cartId + '&session_id=' + sessionId;
-                const request = new XMLHttpRequest();
-                request.open("GET", url, true);
-                request.send();
+                    const url = 'https://bigcommerce-manychat.site/big-commerce/link?cart_id=' + cartId + '&session_id=' + sessionId;
+                    const request = new XMLHttpRequest();
+                    request.open("GET", url, true);
+                    request.send();
 
-                localStorage.setItem('bigcommerce_manychat_cart_linked', 'da');
-            });
+                    localStorage.setItem('bigcommerce_manychat_cart_linked', 'da');
+                });
+        };
     }
 })();
