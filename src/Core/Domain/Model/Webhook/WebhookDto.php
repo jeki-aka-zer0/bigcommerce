@@ -11,13 +11,13 @@ final class WebhookDto
 {
     private string $scope;
 
-    private array $data;
+    private Data $data;
 
     private Store $store;
 
     private Integration $integration;
 
-    public function __construct(string $scope, array $data, Store $store, Integration $integration)
+    public function __construct(string $scope, Data $data, Store $store, Integration $integration)
     {
         $this->scope = $scope;
         $this->data = $data;
@@ -30,7 +30,7 @@ final class WebhookDto
         return $this->scope;
     }
 
-    public function getData(): array
+    public function getData(): Data
     {
         return $this->data;
     }

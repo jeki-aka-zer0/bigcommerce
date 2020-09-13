@@ -9,28 +9,26 @@ use Src\Core\Domain\Model\Store\StoreRepository;
 
 final class WebhookHandler
 {
-    private const KEY_STORE_ID = 'store_id';
-
     private StoreRepository $stores;
 
     private IntegrationRepository $integrations;
 
-    private WebhookProcessorFactory $processorFactory;
+    private WebhookFactory $processorFactory;
 
-    public function __construct(StoreRepository $stores, IntegrationRepository $integrations, WebhookProcessorFactory $processor)
+    public function __construct(StoreRepository $stores, IntegrationRepository $integrations, WebhookFactory $processor)
     {
         $this->stores = $stores;
         $this->integrations = $integrations;
         $this->processorFactory = $processor;
     }
 
-    public function handle(string $scope, array $data): void
+    public function handle(string $scope, array $dataRaw): void
     {
-        $store = $this->stores->getById($data[self::KEY_STORE_ID]);
+        $data = $this->processorFactory->getData($scope, $dataRaw);
+        $store = $this->stores->getById($data->getStoreId());
         $integration = $this->integrations->getByStoreHash($store->getIntegration()->getStoreHash());
-
         $dto = new WebhookDto($scope, $data, $store, $integration);
 
-        $this->processorFactory->build($scope)->process($dto);
+        $this->processorFactory->getProcessor($scope)->process($dto);
     }
 }

@@ -37,7 +37,7 @@ final class Cart
     public function __construct(string $id, array $payload)
     {
         $this->id = $id;
-        $this->payload = $payload;
+        $this->updatePayload($payload);
         $this->createdAt = new DateTimeImmutable();
     }
 

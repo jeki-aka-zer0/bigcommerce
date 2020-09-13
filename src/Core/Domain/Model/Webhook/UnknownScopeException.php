@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Webhook;
 
 use Src\Core\Domain\Model\CommonRuntimeException;
-use Throwable;
 
 final class UnknownScopeException extends CommonRuntimeException
 {
-    public function __construct(string $scope, $code = 0, Throwable $previous = null)
+    public static function unknownWebhook(string $scope): self
     {
         $message = sprintf('Unknown webhook: %s', $scope);
 
-        parent::__construct($message, $code, $previous);
+        return new self($message);
     }
 }
