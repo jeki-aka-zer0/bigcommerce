@@ -10,6 +10,7 @@ use Psr\Container\ContainerInterface;
 use Doctrine\DBAL;
 use Src\Core\Infrastructure\Domain\Model\Auth\DoctrineHashType;
 use Src\Core\Infrastructure\Domain\Model\DoctrineIdType;
+use Src\Core\Infrastructure\Domain\Model\Job\DoctrineSignType;
 
 return [
     EntityManagerInterface::class => function (ContainerInterface $container): EntityManager {
@@ -44,6 +45,7 @@ return [
             'types' => [
                 DoctrineIdType::NAME => DoctrineIdType::class,
                 DoctrineHashType::NAME => DoctrineHashType::class,
+                DoctrineSignType::NAME => DoctrineSignType::class,
             ],
         ],
     ],

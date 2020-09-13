@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="carts", indexes={@ORM\Index(name="store_id_uidx", columns={"id"})})
+ * @ORM\Table(name="carts", indexes={@ORM\Index(name="cart_id_uidx", columns={"id"})})
  */
 final class Cart
 {

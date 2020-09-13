@@ -12,6 +12,7 @@ use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Cart\CartRepository;
+use Src\Core\Domain\Model\Job\JobRepository;
 use Src\Core\Domain\Model\Store\StoreExtractor;
 use Src\Core\Domain\Model\Store\StoreRepository;
 use Src\Core\Domain\Model\Webhook\Scopes;
@@ -24,6 +25,7 @@ use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Domain\Model\DoctrineFlusher;
 use Src\Core\Domain\Model\FlusherInterface;
 use Src\Core\Infrastructure\Domain\Model\DoctrineRemover;
+use Src\Core\Infrastructure\Domain\Model\Job\DoctrineJobRepository;
 use Src\Core\Infrastructure\Domain\Model\Store\DoctrineStoreRepository;
 
 return [
@@ -90,6 +92,8 @@ return [
     StoreRepository::class => fn(ContainerInterface $c) => new DoctrineStoreRepository($c->get(EntityManagerInterface::class)),
 
     CartRepository::class => fn(ContainerInterface $c) => new DoctrineCartRepository($c->get(EntityManagerInterface::class)),
+
+    JobRepository::class => fn(ContainerInterface $c) => new DoctrineJobRepository($c->get(EntityManagerInterface::class)),
 
     'config' => [
         'main' => [
