@@ -15,11 +15,10 @@ abstract class LineItemDataAdapter
     public static function getCartData(array $data): CartData
     {
         return new CartData(
-            $data +
             [
                 Data::KEY_TYPE => CartData::TYPE_CART,
                 CartData::KEY_CART_ID => $data[self::KEY_CART_ID],
-            ]
+            ] + $data
         );
     }
 }
