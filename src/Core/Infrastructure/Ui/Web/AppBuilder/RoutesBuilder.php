@@ -23,6 +23,8 @@ final class RoutesBuilder extends AbstractBuilder
 
         $this->getApp()->get('/', Action\Home\Action::class . '::handle');
 
+        $this->getApp()->get('/test', Action\Test\Action::class . '::handle');
+
         $this->getApp()->group(
             '/big-commerce',
             function (RouteCollectorProxy $group) use ($validator): void {
