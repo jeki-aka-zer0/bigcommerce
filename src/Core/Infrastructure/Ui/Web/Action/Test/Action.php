@@ -10,14 +10,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Domain\Model\Script\ScriptManager;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Action implements RequestHandlerInterface
 {
     private IntegrationRepository $integrationRepository;
 
-    private ScriptManager $clientConfigurator;
+    private ClientConfigurator $clientConfigurator;
 
     public function __construct(IntegrationRepository $integrationRepository, ClientConfigurator $clientConfigurator)
     {
