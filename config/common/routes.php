@@ -7,6 +7,7 @@ use Src\Core\Application\Integration\Create\Handler as IntegrationCreateHandler;
 use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
+use Src\Core\Application\Integration\Link\Handler as IntegrationLinkHandler;
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Script\ScriptManager;
@@ -40,5 +41,9 @@ return [
 
     Action\BigCommerce\Webhook\Receive\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Webhook\Receive\Action(
         $c->get(WebhookReceiveHandler::class),
+    ),
+
+    Action\BigCommerce\Link\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Link\Action(
+        $c->get(IntegrationLinkHandler::class),
     ),
 ];
