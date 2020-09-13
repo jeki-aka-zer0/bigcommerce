@@ -12,7 +12,7 @@ use Src\Core\Domain\Model\Auth\Integration;
  * @ORM\Entity
  * @ORM\Table(name="stores", indexes={@ORM\Index(name="store_id_uidx", columns={"id"})})
  */
-final class Store
+class Store
 {
     /**
      * @var int
