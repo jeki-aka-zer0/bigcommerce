@@ -10,4 +10,16 @@ Content-Type: application/json
 GET https://127.0.0.1/big-commerce/load
 Content-Type: application/json
 
+### Load
+POST https://127.0.0.1/big-commerce/webhook/receive
+Content-Type: application/json
+
+{
+  "scope": "store/cart/created",
+  "data": {
+    "type": "cart",
+    "id": "d30016e2-23c0-4a90-884f-2e92ac135476"
+  }
+}
+
 ###
