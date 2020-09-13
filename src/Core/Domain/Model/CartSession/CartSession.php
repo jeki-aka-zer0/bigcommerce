@@ -28,7 +28,7 @@ final class CartSession
 
     /**
      * @var int
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     private int $accountId;
 
