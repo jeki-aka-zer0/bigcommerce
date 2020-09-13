@@ -126,8 +126,8 @@ return [
             'jsPath' => '/bigcommerce.js?store_hash=%s&account_id=%s',
         ],
         'credentials' => [
-            'clientId' => '36j3cwu6kcwj5ne43oizbagywtq4o7f',
-            'clientSecret' => 'a3b8f147e607c2f7d8929203e639e1ba5629982ebad59395b2b968e8584acbba',
+            'clientId' => '40qcuzt2ol1afdtolicrck6mew5wqaq',
+            'clientSecret' => '1ee17b0501eb3821be4d6667f44170cf43209391350f9f8142f0516f776894cd',
             'redirectPath' => '/big-commerce/auth',
         ],
     ],
