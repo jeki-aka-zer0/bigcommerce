@@ -43,15 +43,15 @@ final class CartWebhookProcessor implements WebhookProcessor
 
         $log = new \Monolog\Logger('wh');
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/cart.log'));
-        $log->warning(serialize($cartRaw));
+        $log->warning('blyaaaaaaaaaaaa!', $cartRaw);
 
         $cart = $this->carts->findById($data->getCartId());
 
         if (null === $cart) {
-            $cart = new Cart($data->getCartId(), (array)$cartRaw->fields);
+            $cart = new Cart($data->getCartId(), (array)$cartRaw);
             $this->carts->add($cart);
         } else {
-            $cart->updatePayload((array)$cartRaw->fields);
+            $cart->updatePayload((array)$cartRaw);
         }
 
         $this->flusher->flush($cart);
