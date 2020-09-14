@@ -31,6 +31,11 @@ class Action implements RequestHandlerInterface
 
         $this->handler->handle($command);
 
-        return new HtmlResponse($this->phpEngine->render('BigCommerce/Auth/view.phtml'));
+        $params = [
+            'integration' => $this->handler->getIntegration(),
+            'storeHash' => $this->handler->getStoreHash(),
+        ];
+
+        return new HtmlResponse($this->phpEngine->render('BigCommerce/Load/view.phtml', $params));
     }
 }

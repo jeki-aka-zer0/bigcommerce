@@ -63,6 +63,11 @@ class Integration
         return $this->apiKey;
     }
 
+    public function setAuthPayload(array $authPayload): void
+    {
+        $this->authPayload = $authPayload;
+    }
+
     public function getAccountId(): ?int
     {
         return (int) explode(':', $this->getApiKey())[0];

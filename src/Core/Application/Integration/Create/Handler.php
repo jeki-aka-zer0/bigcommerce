@@ -6,6 +6,7 @@ namespace Src\Core\Application\Integration\Create;
 
 use Src\Core\Domain\Model\Auth\AuthTokenExtractor;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
+use Src\Core\Domain\Model\Auth\Hash;
 use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Store\StoreExtractor;
@@ -24,6 +25,10 @@ final class Handler
     private FlusherInterface $flusher;
 
     private StoreExtractor $storeExtractor;
+
+    private Hash $storeHash;
+
+    private Integration $integration;
 
     public function __construct(
         CredentialsDto $credentials,
@@ -46,20 +51,33 @@ final class Handler
         $this->credentials->scope = $command->getScope();
 
         $authTokenExtractor = new AuthTokenExtractor($this->credentials);
-        $storeHash = $authTokenExtractor->getHash();
+        $this->storeHash = $authTokenExtractor->getHash();
 
-        $integration = $this->integrations->findByStoreHash($storeHash);
-        if (null !== $integration) {
+        $this->integration = $this->integrations->findByStoreHash($this->storeHash);
+        if (null !== $this->integration) {
+            $this->integration->setAuthPayload((array)$authTokenExtractor->getResponse());
+            $this->flusher->flush($this->integration);
+
             return;
         }
 
-        $integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
+        $this->integration = new Integration(Id::next(), $this->storeHash, (array)$authTokenExtractor->getResponse());
 
-        $store = $this->storeExtractor->extract($integration);
+        $store = $this->storeExtractor->extract($this->integration);
 
-        $this->integrations->add($integration);
+        $this->integrations->add($this->integration);
         $this->stores->add($store);
 
-        $this->flusher->flush($integration, $store);
+        $this->flusher->flush($this->integration, $store);
+    }
+
+    public function getStoreHash(): Hash
+    {
+        return $this->storeHash;
+    }
+
+    public function getIntegration(): Integration
+    {
+        return $this->integration;
     }
 }
