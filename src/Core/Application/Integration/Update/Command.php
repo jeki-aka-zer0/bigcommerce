@@ -6,14 +6,14 @@ namespace Src\Core\Application\Integration\Update;
 
 final class Command
 {
-    private string $apiKey;
+    private string $triggerApiKey;
 
     private string $storeHash;
 
-    public function __construct(string $storeHash, string $apiKey)
+    public function __construct(string $storeHash, string $triggerApiKey)
     {
         $this->storeHash = $storeHash;
-        $this->apiKey = $apiKey;
+        $this->triggerApiKey = $triggerApiKey;
     }
 
     public function getStoreHash(): string
@@ -21,8 +21,8 @@ final class Command
         return $this->storeHash;
     }
 
-    public function getApiKey(): string
+    public function getTriggerApiKey(): string
     {
-        return $this->apiKey;
+        return $this->triggerApiKey;
     }
 }

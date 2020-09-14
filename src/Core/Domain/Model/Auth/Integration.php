@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Auth;
 
 use DateTimeImmutable;
+use Ramsey\Uuid\Uuid;
 use Src\Core\Domain\Model\Id;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +35,12 @@ class Integration
     private ?string $apiKey;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $triggerApiKey;
+
+    /**
      * @var array
      * @ORM\Column(type="json")
      */
@@ -50,17 +57,23 @@ class Integration
         $this->id = $id;
         $this->storeHash = $storeHash;
         $this->authPayload = $authPayload;
+        $this->apiKey = $storeHash . ':' . Uuid::uuid4()->toString();
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public function setApiKey(string $apiKey): void
-    {
-        $this->apiKey = $apiKey;
-    }
-
-    public function getApiKey(): ?string
+    public function getApiKey(): string
     {
         return $this->apiKey;
+    }
+
+    public function setTriggerApiKey(string $triggerApiKey): void
+    {
+        $this->triggerApiKey = $triggerApiKey;
+    }
+
+    public function getTriggerApiKey(): ?string
+    {
+        return $this->triggerApiKey;
     }
 
     public function setAuthPayload(array $authPayload): void
@@ -70,7 +83,7 @@ class Integration
 
     public function getAccountId(): ?int
     {
-        return (int) explode(':', $this->getApiKey())[0];
+        return (int) explode(':', $this->getTriggerApiKey())[0];
     }
 
     public function getAccessToken(): string
