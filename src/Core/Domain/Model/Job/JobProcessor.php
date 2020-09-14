@@ -50,6 +50,38 @@ final class JobProcessor
             throw new WrongLoadPayloadException(); // @todo fix
         }
 
-        // @todo call trigger
+        // Дока - https://support.manychat.com/support/solutions/articles/36000228026-dev-program-quick-start#How-to-Use-Triggers
+        $options = [
+            'body' => [
+                'version' => 1,
+                'subscriber_id' => $subscriberId,
+                'trigger_name' => 'abandoned_cart', // @todo config
+//                'context' => [  // @todo
+//                    Для начала хватит этих двух
+//                    Cart Url
+//                    Cart Price
+
+//                    First Added Product Image
+//                    First Added Product Title
+//                    First Added Product Price
+//                    First Added Product Quantity
+//                    Most Expensive Product Image
+//                    Most Expensive Product Title
+//                    Most Expensive Product Price
+//                    Most Expensive Product Quantity
+//                    Cart Is Paid (no)
+//                ],
+            ],
+            'headers' => [
+                'Authorization' => sprintf('Bearer %s', $integration->getTriggerApiKey()),
+                'Accept' => 'application/json',
+            ]
+        ];
+        $response = (new Client())->post('https://dev.manychat.com/apps/wh', $options);
+        $response = json_decode((string)$response->getBody()); // @todo need?
+
+        var_dump($response);
+
+        // @todo check response
     }
 }
