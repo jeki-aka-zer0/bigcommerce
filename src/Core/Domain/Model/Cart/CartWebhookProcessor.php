@@ -70,6 +70,7 @@ final class CartWebhookProcessor implements WebhookProcessor
 
         if (null === $job) {
             $job = new Job(Id::next(), $sign, $scheduledAt, null);
+            $this->jobs->add($job);
         } else {
             $job->reschedule($scheduledAt);
         }
