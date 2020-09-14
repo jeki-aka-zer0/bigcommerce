@@ -7,12 +7,14 @@ namespace Src\Core\Domain\Model\Job;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Src\Core\Domain\Model\Id;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="jobs", indexes={
- *     @ORM\Index(name="sign_uidx", columns={"sign"}),
  *     @ORM\Index(name="jobs_scheduled_at_idx", columns={"scheduled_at"}),
+ * }, uniqueConstraints={
+ *     @UniqueConstraint(name="sign_uidx", columns={"sign"})
  * })
  */
 final class Job
