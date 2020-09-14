@@ -48,10 +48,10 @@ final class CartWebhookProcessor implements WebhookProcessor
         $cart = $this->carts->findById($data->getCartId());
 
         if (null === $cart) {
-            $cart = new Cart($data->getCartId(), (array)$cartRaw);
+            $cart = new Cart($data->getCartId(), (array)$cartRaw['fields']['data']);
             $this->carts->add($cart);
         } else {
-            $cart->updatePayload((array)$cartRaw);
+            $cart->updatePayload((array)$cartRaw['fields']['data']);
         }
 
         $this->flusher->flush($cart);
