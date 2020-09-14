@@ -6,6 +6,7 @@ namespace Src\Core\Domain\Model\Job;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Id;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
@@ -25,6 +26,13 @@ final class Job
      * @ORM\Id
      */
     private Id $id;
+
+    /**
+     * @var Integration
+     * @ORM\ManyToOne(targetEntity="Src\Core\Domain\Model\Auth\Integration")
+     * @ORM\JoinColumn(name="integration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     */
+    private Integration $integration;
 
     /**
      * @var int
@@ -50,10 +58,11 @@ final class Job
      */
     private DateTimeImmutable $createdAt;
 
-    public function __construct(Id $id, Sign $sign, DateTimeImmutable $scheduledAt, ?int $subscriberId)
+    public function __construct(Id $id, Sign $sign, Integration $integration, DateTimeImmutable $scheduledAt, ?int $subscriberId)
     {
         $this->id = $id;
         $this->sign = $sign;
+        $this->integration = $integration;
         $this->scheduledAt = $scheduledAt;
         $this->subscriberId = $subscriberId;
         $this->createdAt = new DateTimeImmutable();
@@ -64,13 +73,18 @@ final class Job
         $this->scheduledAt = $scheduledAt;
     }
 
-    public function setSubscriberId(int $subscriberId): void
-    {
-        $this->subscriberId = $subscriberId;
-    }
-
     public function getSign(): Sign
     {
         return $this->sign;
+    }
+
+    public function getIntegration(): Integration
+    {
+        return $this->integration;
+    }
+
+    public function setSubscriberId(int $subscriberId): void
+    {
+        $this->subscriberId = $subscriberId;
     }
 }

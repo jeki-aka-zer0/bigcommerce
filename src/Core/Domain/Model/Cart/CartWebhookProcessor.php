@@ -69,7 +69,7 @@ final class CartWebhookProcessor implements WebhookProcessor
         $scheduledAt = (new DateTimeImmutable())->modify('+ 3 minute'); // @todo decide
 
         if (null === $job) {
-            $job = new Job(Id::next(), $sign, $scheduledAt, null);
+            $job = new Job(Id::next(), $sign, $integration, $scheduledAt, null);
             $this->jobs->add($job);
         } else {
             $job->reschedule($scheduledAt);

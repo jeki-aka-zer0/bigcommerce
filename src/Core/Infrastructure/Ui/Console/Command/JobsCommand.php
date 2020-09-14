@@ -42,7 +42,7 @@ final class JobsCommand extends Command
             }
 
             foreach ($jobs as $job) {
-                $this->processor->process($job)
+                $this->processor->process($job);
 
                 $output->writeln(sprintf('<info>Job processed: %s</info>', $job->getSign()->getSign()));
             }
