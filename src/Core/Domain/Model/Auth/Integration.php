@@ -41,7 +41,7 @@ class Integration
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $triggerApiKey;
+    private ?string $triggerApiKey = null;
 
     /**
      * @var array
