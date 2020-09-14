@@ -27,14 +27,14 @@ final class Form implements FormInterface
         $body = $request->getParsedBody();
 
         $this->storeHash = $body['store_hash'] ?? null;
-        $this->apiKey = $body['api_key'] ?? null;
+        $this->apiKey = $body['trigger_api_key'] ?? null;
     }
 
     public function toArray(): array
     {
         return [
             'store_hash' => $this->storeHash,
-            'api_key' => $this->apiKey,
+            'trigger_api_key' => $this->apiKey,
         ];
     }
 }
