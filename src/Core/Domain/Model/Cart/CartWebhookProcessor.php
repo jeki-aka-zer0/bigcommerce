@@ -36,22 +36,22 @@ final class CartWebhookProcessor implements WebhookProcessor
         $data = $dto->getData();
         $integration = $this->integrations->getByStoreHash($dto->getHash());
         $this->clientConfigurator->configureV3($integration);
-        $cartRaw = Client::getResource(sprintf('/carts/%s', $data->getCartId()));
-        if (!$cartRaw) {
-            throw new CommonRuntimeException('Wrong cart response: ' . Client::getLastError());
+        $cartResource = Client::getResource(sprintf('/carts/%s', $data->getCartId()));
+        if (!$cartResource) {
+            throw new CommonRuntimeException('Wrong cart response: ' . Client::getLastError()); // @todo fix
         }
 
         $log = new \Monolog\Logger('wh');
         $log->pushHandler(new \Monolog\Handler\StreamHandler(ROOT_DIR . '/var/log/cart.log'));
-        $log->warning('Cart API response', (array)$cartRaw);
+        $log->warning('Cart API response', (array)$cartResource->data);
 
         $cart = $this->carts->findById($data->getCartId());
 
         if (null === $cart) {
-            $cart = new Cart($data->getCartId(), (array)$cartRaw->fields->data);
+            $cart = new Cart($data->getCartId(), (array)$cartResource->data);
             $this->carts->add($cart);
         } else {
-            $cart->updatePayload((array)$cartRaw->fields->data);
+            $cart->updatePayload((array)$cartResource->data);
         }
 
         $this->flusher->flush($cart);
