@@ -36,7 +36,7 @@ final class CartWebhookProcessor implements WebhookProcessor
         $data = $dto->getData();
         $integration = $this->integrations->getByStoreHash($dto->getHash());
         $this->clientConfigurator->configureV3($integration);
-        $cartRaw = Client::getConnection()->get(sprintf('%s/cart/%s', Client::$api_path, $data->getCartId()));
+        $cartRaw = Client::getResource(sprintf('/carts/%s', $data->getCartId()));
         if (!$cartRaw) {
             throw new CommonRuntimeException('Wrong cart response: ' . Client::getLastError());
         }
