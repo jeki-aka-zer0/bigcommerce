@@ -68,4 +68,9 @@ final class Job
     {
         $this->subscriberId = $subscriberId;
     }
+
+    public function getSign(): Sign
+    {
+        return $this->sign;
+    }
 }

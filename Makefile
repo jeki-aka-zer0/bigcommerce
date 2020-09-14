@@ -31,3 +31,6 @@ test:
 
 pull:
 	git pull origin master
+
+jobs:
+	docker-compose exec php-cli composer app jobs:run
