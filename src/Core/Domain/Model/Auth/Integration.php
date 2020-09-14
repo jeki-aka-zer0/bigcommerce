@@ -102,7 +102,7 @@ class Integration
         $this->abandonedPeriod = $abandonedPeriod;
     }
 
-    public function setsetAbandonedUnit(string $abandonedUnit): void
+    public function setAbandonedUnit(string $abandonedUnit): void
     {
         $this->abandonedUnit = $abandonedUnit;
     }
