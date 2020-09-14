@@ -20,12 +20,6 @@ declare(strict_types=1);
         </span>
     </div>
 <?php } else { ?>
-    <script>
-        $("#submit-button").on("click", function() {
-            $(this).prop("disabled", true);
-        });
-    </script>
-
     <div class="container text-center">
         <h1 class="mt-5 mb-5">Insert Trigger Api Key from ManyChat</h1>
 
@@ -35,7 +29,7 @@ declare(strict_types=1);
                     <input type="text" name="trigger_api_key" class="form-control" placeholder="Trigger Api Key">
                 </div>
                 <input type="hidden" name="store_hash" value="<?php echo $integration->getStoreHash()->getHash() ?>">
-                <button type="submit" id="submit-button" class="btn btn-primary mb-2">Link accounts</button>
+                <button type="submit" class="btn btn-primary mb-2">Link accounts</button>
             </div>
         </form>
     </div>
