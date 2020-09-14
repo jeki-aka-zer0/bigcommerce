@@ -28,7 +28,7 @@ final class Handler
 
     private Hash $storeHash;
 
-    private Integration $integration;
+    private ?Integration $integration;
 
     public function __construct(
         CredentialsDto $credentials,
