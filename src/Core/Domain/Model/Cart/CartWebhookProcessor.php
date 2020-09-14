@@ -66,7 +66,16 @@ final class CartWebhookProcessor implements WebhookProcessor
 
         $sign = Sign::build(self::TRIGGER_KEY_CART, $cart->getId());
         $job = $this->jobs->findBySign($sign);
-        $scheduledAt = (new DateTimeImmutable())->modify('+ 3 minute'); // @todo decide
+
+        // @todo move
+        $units = ['seconds', 'minutes', 'hours', 'days'];
+        $unit = \in_array($integration->getAbandonedUnit(), $units, true) ? $integration->getAbandonedUnit() : $units[2];
+        $period = (int)$integration->getAbandonedPeriod();
+        if ($period < 0) {
+            $period = 1;
+        }
+
+        $scheduledAt = (new DateTimeImmutable())->modify(sprintf('+ %d %s', $period, $unit));
 
         if (null === $job) {
             $job = new Job(Id::next(), $sign, $integration, $scheduledAt, null);

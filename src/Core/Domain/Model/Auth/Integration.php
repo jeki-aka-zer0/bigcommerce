@@ -136,4 +136,14 @@ class Integration
     {
         return $this->publicApiKey;
     }
+
+    public function getAbandonedPeriod(): string
+    {
+        return $this->abandonedPeriod;
+    }
+
+    public function getAbandonedUnit(): string
+    {
+        return $this->abandonedUnit;
+    }
 }
