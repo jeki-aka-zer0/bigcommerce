@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Core\Application\Integration\Update;
 
 use Src\Core\Domain\Model\Auth\Hash;
+use Src\Core\Domain\Model\Auth\Integration;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Script\ScriptManager;
 use Src\Core\Domain\Model\FlusherInterface;
@@ -19,6 +20,8 @@ final class Handler
     private WebhookManager $webhookManager;
 
     private ScriptManager $scriptManager;
+
+    private ?Integration $integration;
 
     public function __construct(
         IntegrationRepository $integrationRepository,
@@ -35,13 +38,18 @@ final class Handler
     public function handle(Command $command): void
     {
         // @todo UNSECURE
-        $integration = $this->integrationRepository->getByStoreHash(new Hash($command->getStoreHash()));
+        $this->integration = $this->integrationRepository->getByStoreHash(new Hash($command->getStoreHash()));
 
-        $integration->setTriggerApiKey($command->getTriggerApiKey());
+        $this->integration->setTriggerApiKey($command->getTriggerApiKey());
 
-        $this->webhookManager->subscribe($integration);
-        $this->scriptManager->addToStore($integration);
+        $this->webhookManager->subscribe($this->integration);
+        $this->scriptManager->addToStore($this->integration);
 
-        $this->flusher->flush($integration);
+        $this->flusher->flush($this->integration);
+    }
+
+    public function getIntegration(): Integration
+    {
+        return $this->integration;
     }
 }

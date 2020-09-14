@@ -2,13 +2,8 @@
 declare(strict_types=1);
 /**
  * @var \Src\Core\Domain\Model\Auth\Integration $integration
- * @var string $storeHash
  */
 ?>
-
-<script>
-    <?php echo 'const APP_CONFIG = {store_hash: "' . $storeHash . '"}'; ?>
-</script>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -32,7 +27,7 @@ declare(strict_types=1);
                 <div class="form-group mx-sm-3 mb-2">
                     <input type="text" name="trigger_api_key" class="form-control" placeholder="Trigger Api Key">
                 </div>
-                <input type="hidden" name="store_hash" value="<?php echo $storeHash ?>">
+                <input type="hidden" name="store_hash" value="<?php echo $integration->getStoreHash()->getHash() ?>">
                 <button type="submit" class="btn btn-primary mb-2">Link accounts</button>
             </div>
         </form>

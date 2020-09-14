@@ -33,7 +33,6 @@ class Action implements RequestHandlerInterface
 
         $params = [
             'integration' => $this->handler->getIntegration(),
-            'storeHash' => $this->handler->getStoreHash(),
         ];
 
         return new HtmlResponse($this->phpEngine->render('BigCommerce/Load/view.phtml', $params));

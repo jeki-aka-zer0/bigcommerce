@@ -26,8 +26,6 @@ final class Handler
 
     private StoreExtractor $storeExtractor;
 
-    private Hash $storeHash;
-
     private ?Integration $integration;
 
     public function __construct(
@@ -51,9 +49,9 @@ final class Handler
         $this->credentials->scope = $command->getScope();
 
         $authTokenExtractor = new AuthTokenExtractor($this->credentials);
-        $this->storeHash = $authTokenExtractor->getHash();
+        $storeHash = $authTokenExtractor->getHash();
 
-        $this->integration = $this->integrations->findByStoreHash($this->storeHash);
+        $this->integration = $this->integrations->findByStoreHash($storeHash);
         if (null !== $this->integration) {
             $this->integration->setAuthPayload((array)$authTokenExtractor->getResponse());
             $this->flusher->flush($this->integration);
@@ -61,7 +59,7 @@ final class Handler
             return;
         }
 
-        $this->integration = new Integration(Id::next(), $this->storeHash, (array)$authTokenExtractor->getResponse());
+        $this->integration = new Integration(Id::next(), $storeHash, (array)$authTokenExtractor->getResponse());
 
         $store = $this->storeExtractor->extract($this->integration);
 
@@ -69,11 +67,6 @@ final class Handler
         $this->stores->add($store);
 
         $this->flusher->flush($this->integration, $store);
-    }
-
-    public function getStoreHash(): Hash
-    {
-        return $this->storeHash;
     }
 
     public function getIntegration(): Integration

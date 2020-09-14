@@ -19,8 +19,6 @@ final class Handler
 
     private ?Integration $integration;
 
-    private ?string $storeHash;
-
     public function __construct(LoadBodyExtractor $loadBodyExtractor, IntegrationRepository $integrationRepository)
     {
         $this->loadBodyExtractor = $loadBodyExtractor;
@@ -39,16 +37,10 @@ final class Handler
         $integration = $this->integrationRepository->getByStoreHash(new Hash($storeHash));
 
         $this->integration = $integration;
-        $this->storeHash = $storeHash;
     }
 
     public function getIntegration(): Integration
     {
         return $this->integration;
-    }
-
-    public function getStoreHash(): string
-    {
-        return $this->storeHash;
     }
 }
