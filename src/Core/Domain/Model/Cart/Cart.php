@@ -43,10 +43,10 @@ final class Cart
 
     public function updatePayload(array $payload): void
     {
-        $idFromPayload = $payload[self::KEY_CART_ID] ?? null;
-        if ($idFromPayload !== $this->id) {
+        $idFromPayload = $payload[self::KEY_CART_ID] ?? '';
+        /*if ($idFromPayload !== $this->id) {
             throw InvalidPayload::differentIds($this->id, $idFromPayload);
-        }
+        }*/
 
         $this->payload = $payload;
     }
