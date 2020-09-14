@@ -44,6 +44,24 @@ class Integration
     private ?string $triggerApiKey = null;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $publicApiKey = null;
+
+    /**
+     * @var string
+     * @ORM\Column(type="integer", length=255, nullable=true)
+     */
+    private ?int $abandonedPeriod = null;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $abandonedUnit = null;
+
+    /**
      * @var array
      * @ORM\Column(type="json")
      */
@@ -72,6 +90,21 @@ class Integration
     public function setTriggerApiKey(string $triggerApiKey): void
     {
         $this->triggerApiKey = $triggerApiKey;
+    }
+
+    public function setPublicApiKey(string $publicApiKey): void
+    {
+        $this->publicApiKey = $publicApiKey;
+    }
+
+    public function setAbandonedPeriod(int $abandonedPeriod): void
+    {
+        $this->abandonedPeriod = $abandonedPeriod;
+    }
+
+    public function setAbandonedUnit(string $abandonedUnit): void
+    {
+        $this->abandonedUnit = $abandonedUnit;
     }
 
     public function getTriggerApiKey(): ?string

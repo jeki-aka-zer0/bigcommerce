@@ -41,6 +41,9 @@ final class Handler
         $this->integration = $this->integrationRepository->getByStoreHash(new Hash($command->getStoreHash()));
 
         $this->integration->setTriggerApiKey($command->getTriggerApiKey());
+        $this->integration->setPublicApiKey($command->getPublicApiKey());
+        $this->integration->setAbandonedPeriod($command->getAbandonedPeriod());
+        $this->integration->setAbandonedUnit($command->getAbandonedUnit());
 
         $this->webhookManager->subscribe($this->integration);
         $this->scriptManager->addToStore($this->integration);

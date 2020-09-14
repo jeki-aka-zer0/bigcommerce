@@ -9,8 +9,6 @@ use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
 use Src\Core\Application\Integration\Link\Handler as IntegrationLinkHandler;
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
-use Src\Core\Domain\Model\Auth\IntegrationRepository;
-use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Ui\Web\Action;
 use Symfony\Component\Templating\PhpEngine;
 
@@ -18,8 +16,7 @@ return [
     Action\Home\Action::class => fn() => new Action\Home\Action(getenv('APP_NAME')),
 
     Action\Test\Action::class => fn(ContainerInterface $c) => new Action\Test\Action(
-        $c->get(IntegrationRepository::class),
-        $c->get(ClientConfigurator::class),
+        $c->get(PhpEngine::class),
     ),
 
     Action\BigCommerce\Auth\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Auth\Action(
