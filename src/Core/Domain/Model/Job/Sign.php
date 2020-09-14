@@ -18,7 +18,7 @@ final class Sign
 
     public function __construct(string $sign)
     {
-        $this->sign = $sign;
+        $this->sign = trim($sign);
         $chunks = (array)(explode(self::DELIMITER, $this->sign));
         Assert::count($chunks, 2);
 
