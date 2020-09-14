@@ -6,10 +6,13 @@ namespace Src\Core\Domain\Model\Cart;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="carts", indexes={@ORM\Index(name="cart_id_uidx", columns={"id"})})
+ * @ORM\Table(name="carts", uniqueConstraints={
+ *     @UniqueConstraint(name="cart_id_uidx", columns={"id"})
+ * })
  */
 final class Cart
 {

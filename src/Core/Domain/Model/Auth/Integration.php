@@ -7,10 +7,13 @@ namespace Src\Core\Domain\Model\Auth;
 use DateTimeImmutable;
 use Src\Core\Domain\Model\Id;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="integrations", indexes={@ORM\Index(name="store_hash_uidx", columns={"storeHash"})})
+ * @ORM\Table(name="integrations", uniqueConstraints={
+ *     @UniqueConstraint(name="store_hash_uidx", columns={"storeHash"})
+ * })
  */
 class Integration
 {
