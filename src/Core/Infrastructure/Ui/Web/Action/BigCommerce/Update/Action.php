@@ -27,7 +27,13 @@ class Action implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
-        $command = new Command($body['store_hash'], $body['trigger_api_key']);
+        $command = new Command(
+            $body['store_hash'],
+            $body['trigger_api_key'],
+            $body['public_api_key'],
+            (int) $body['abandoned_period'],
+            $body['abandoned_unit']
+        );
 
         $this->handler->handle($command);
 

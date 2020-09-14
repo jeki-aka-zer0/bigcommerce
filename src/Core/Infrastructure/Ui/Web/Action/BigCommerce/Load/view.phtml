@@ -10,7 +10,6 @@ declare(strict_types=1);
 <?php if (!empty($integration->getTriggerApiKey())) { ?>
     <div class="container text-center">
         <h1 class="mt-5">The application is installed and configured</h1>
-        <p class="mb-5">Api Key: <samp><?php echo $integration->getApiKey() ?></samp></p>
         <span class="text-success" style="font-size: 350px;">
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -21,16 +20,43 @@ declare(strict_types=1);
     </div>
 <?php } else { ?>
     <div class="container text-center">
-        <h1 class="mt-5 mb-5">Insert Trigger Api Key from ManyChat</h1>
+        <h1 class="mt-5">Finish installation</h1>
 
-        <form class="col-lg-6 offset-lg-3" action="/big-commerce/update" method="post">
-            <div class="row justify-content-center">
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="text" name="trigger_api_key" class="form-control" placeholder="Trigger Api Key">
+        <form class="col-lg-6 offset-lg-3 text-left" action="/big-commerce/update" method="post">
+            <div class="form-group">
+                <label for="trigger_api_key" class="col-form-label">Trigger Api Key</label>
+                <div>
+                    <input type="text" class="form-control" id="trigger_api_key" name="trigger_api_key">
                 </div>
-                <input type="hidden" name="store_hash" value="<?php echo $integration->getStoreHash()->getHash() ?>">
-                <button type="submit" class="btn btn-primary mb-2">Link accounts</button>
             </div>
+            <div class="form-group">
+                <label for="public_api_key" class="col-form-label">Public Api Key</label>
+                <div>
+                    <input type="text" class="form-control" id="public_api_key" name="public_api_key">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-8">
+                    <label for="abandoned_period" class="col-form-label">Abandoned period</label>
+                    <div>
+                        <input type="text" value="23" class="form-control" id="abandoned_period" name="abandoned_period">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="period_unit" class="col-form-label">State</label>
+                    <div>
+                        <select name="abandoned_unit" class="custom-select" id="period_unit">
+                            <option value="seconds">Seconds</option>
+                            <option value="minutes">Minutes</option>
+                            <option selected value="hours">Hours</option>
+                            <option value="days">Days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="store_hash" value="<?php echo $integration->getStoreHash()->getHash() ?>">
+            <button type="submit" class="btn btn-primary col-sm-12">Finish</button>
         </form>
     </div>
 <?php } ?>
