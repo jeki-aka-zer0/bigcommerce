@@ -131,4 +131,9 @@ class Integration
     {
         return $this->storeHash;
     }
+
+    public function getPublicApiKey(): string
+    {
+        return $this->publicApiKey;
+    }
 }

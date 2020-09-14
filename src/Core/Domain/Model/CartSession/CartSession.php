@@ -52,4 +52,9 @@ final class CartSession
         $this->storeHash = $storeHash;
         $this->createdAt = new DateTimeImmutable();
     }
+
+    public function getSessionId(): string
+    {
+        return $this->sessionId;
+    }
 }
