@@ -50,4 +50,9 @@ final class Cart
 
         $this->payload = $payload;
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
 }

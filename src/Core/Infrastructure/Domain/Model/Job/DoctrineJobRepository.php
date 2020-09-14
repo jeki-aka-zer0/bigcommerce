@@ -23,9 +23,12 @@ final class DoctrineJobRepository implements JobRepository
         $this->repo = $em->getRepository(Job::class);
     }
 
-    public function getAllBySign(Sign $sign): array
+    public function findBySign(Sign $sign): ?Job
     {
-        return $this->repo->findBy(['sign' => $sign->getSign()]);
+        /** @var Job|null $job */
+        $job = $this->repo->findOneBy(['sign' => $sign->getSign()]);
+
+        return $job;
     }
 
     public function pop(): array

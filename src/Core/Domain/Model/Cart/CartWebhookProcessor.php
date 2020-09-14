@@ -5,15 +5,22 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Cart;
 
 use Bigcommerce\Api\Client;
+use DateTimeImmutable;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\CommonRuntimeException;
 use Src\Core\Domain\Model\FlusherInterface;
+use Src\Core\Domain\Model\Id;
+use Src\Core\Domain\Model\Job\Job;
+use Src\Core\Domain\Model\Job\JobRepository;
+use Src\Core\Domain\Model\Job\Sign;
 use Src\Core\Domain\Model\Webhook\WebhookDto;
 use Src\Core\Domain\Model\Webhook\WebhookProcessor;
 use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class CartWebhookProcessor implements WebhookProcessor
 {
+    private const TRIGGER_KEY_CART = 'abandoned_cart';
+
     private IntegrationRepository $integrations;
 
     private CartRepository $carts;
@@ -22,12 +29,15 @@ final class CartWebhookProcessor implements WebhookProcessor
 
     private ClientConfigurator $clientConfigurator;
 
-    public function __construct(IntegrationRepository $integrations, CartRepository $carts, FlusherInterface $flusher, ClientConfigurator $clientConfigurator)
+    private JobRepository $jobs;
+
+    public function __construct(IntegrationRepository $integrations, CartRepository $carts, FlusherInterface $flusher, ClientConfigurator $clientConfigurator, JobRepository $jobs)
     {
         $this->integrations = $integrations;
         $this->carts = $carts;
         $this->flusher = $flusher;
         $this->clientConfigurator = $clientConfigurator;
+        $this->jobs = $jobs;
     }
 
     public function process(WebhookDto $dto): void
@@ -54,6 +64,16 @@ final class CartWebhookProcessor implements WebhookProcessor
             $cart->updatePayload((array)$cartResource->data);
         }
 
-        $this->flusher->flush($cart);
+        $sign = Sign::build(self::TRIGGER_KEY_CART, $cart->getId());
+        $job = $this->jobs->findBySign($sign);
+        $scheduledAt = (new DateTimeImmutable())->modify('+ 3 minute'); // @todo decide
+
+        if (null === $job) {
+            $job = new Job(Id::next(), $sign, $scheduledAt, null);
+        } else {
+            $job->reschedule($scheduledAt);
+        }
+
+        $this->flusher->flush($cart, $job);
     }
 }

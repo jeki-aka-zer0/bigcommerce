@@ -6,12 +6,7 @@ namespace Src\Core\Domain\Model\Job;
 
 interface JobRepository
 {
-    /**
-     * @param Sign $sign
-     *
-     * @return Job[]
-     */
-    public function getAllBySign(Sign $sign): array;
+    public function findBySign(Sign $sign): ?Job;
 
     /**
      * @return Job[]

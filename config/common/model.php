@@ -90,6 +90,7 @@ return [
             $c->get(CartRepository::class),
             $c->get(FlusherInterface::class),
             $c->get(ClientConfigurator::class),
+            $c->get(JobRepository::class),
         )),
     ),
 

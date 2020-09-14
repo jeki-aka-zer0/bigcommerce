@@ -24,7 +24,7 @@ final class DoctrineStoreRepository implements StoreRepository
 
     public function findById(int $id): ?Store
     {
-        /** @var Store $store */
+        /** @var Store|null $store */
         $store = $this->repo->findOneBy(['id' => $id]);
 
         return $store;
