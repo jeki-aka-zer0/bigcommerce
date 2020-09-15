@@ -44,6 +44,11 @@ final class Handler
             throw new WrongLoadPayloadException();
         }
 
+        if ($command->isDebug()) {
+            var_dump($redirectUrls);
+            exit;
+        }
+
         $this->checkoutUrl = $redirectUrls->data->checkout_url;
     }
 

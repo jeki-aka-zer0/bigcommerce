@@ -8,13 +8,21 @@ final class Command
 {
     private string $cartId;
 
-    public function __construct(string $cartId)
+    private bool $debug;
+
+    public function __construct(string $cartId, bool $debug = false)
     {
         $this->cartId = $cartId;
+        $this->debug = $debug;
     }
 
     public function getCartId(): string
     {
         return $this->cartId;
+    }
+
+    public function isDebug(): bool
+    {
+        return $this->debug;
     }
 }
