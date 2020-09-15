@@ -41,7 +41,7 @@ final class WebhookDto
 
     public function getHash(): Hash
     {
-        return new $this->hash;
+        return $this->hash;
     }
 
     public function getStore(): Store
