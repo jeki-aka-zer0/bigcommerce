@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Job;
 
 use GuzzleHttp\Client;
+use Bigcommerce\Api\Client as BigcommerceClient;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\CartSession\CartSessionRepository;
 use Src\Core\Domain\Model\WrongLoadPayloadException;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class JobProcessor
 {
@@ -18,11 +20,14 @@ final class JobProcessor
 
     private IntegrationRepository $integrations;
 
-    public function __construct(CartSessionRepository $cartSessions, CartRepository $carts, IntegrationRepository $integrations)
+    private ClientConfigurator $clientConfigurator;
+
+    public function __construct(CartSessionRepository $cartSessions, CartRepository $carts, IntegrationRepository $integrations, ClientConfigurator $clientConfigurator)
     {
         $this->cartSessions = $cartSessions;
         $this->carts = $carts;
         $this->integrations = $integrations;
+        $this->clientConfigurator = $clientConfigurator;
     }
 
     public function process(Job $job): void
@@ -50,15 +55,23 @@ final class JobProcessor
             throw new WrongLoadPayloadException(); // @todo fix
         }
 
+        $this->clientConfigurator->configureV3($integration);
+        $redirectUrls = BigcommerceClient::createResource('/carts/' . $cartId . '/redirect_urls', []);
+
+        if (!$redirectUrls) {
+            var_dump($redirectUrls);
+            throw new WrongLoadPayloadException(); // @todo fix
+        }
+
         // Дока - https://support.manychat.com/support/solutions/articles/36000228026-dev-program-quick-start#How-to-Use-Triggers
         $options = [
             'body' => json_encode([
                 'version' => 1,
                 'subscriber_id' => $subscriberId,
                 'trigger_name' => 'abandoned_cart', // @todo config
-//                'context' => [  // @todo
+                'context' => [  // @todo
 //                    Для начала хватит этих двух
-//                    Cart Url
+                    'cart_url' => $redirectUrls['checkout_url']
 //                    Cart Price
 
 //                    First Added Product Image
@@ -70,7 +83,7 @@ final class JobProcessor
 //                    Most Expensive Product Price
 //                    Most Expensive Product Quantity
 //                    Cart Is Paid (no)
-//                ],
+                ],
             ]),
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $integration->getTriggerApiKey()),

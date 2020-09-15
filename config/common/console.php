@@ -8,6 +8,7 @@ use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\CartSession\CartSessionRepository;
 use Src\Core\Domain\Model\Job\JobProcessor;
 use Src\Core\Domain\Model\Job\JobRepository;
+use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 use Src\Core\Infrastructure\Ui\Console\Command\JobsCommand;
 
 return [
@@ -17,6 +18,7 @@ return [
             $c->get(CartSessionRepository::class),
             $c->get(CartRepository::class),
             $c->get(IntegrationRepository::class),
+            $c->get(ClientConfigurator::class),
         ),
     ),
 
