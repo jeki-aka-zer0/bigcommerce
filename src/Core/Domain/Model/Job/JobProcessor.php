@@ -32,7 +32,7 @@ final class JobProcessor
         $cart = $this->carts->getById($cartId);
         $integration = $job->getIntegration();
 
-        $url = sprintf('https://dev.manychat.com/apiPixel/getSession?session_id=%s', $cartSession->getSessionId());
+        $url = sprintf('https://manychat.com/apiPixel/getSession?session_id=%s', $cartSession->getSessionId());
         $options = [
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $integration->getPublicApiKey()),
@@ -77,7 +77,7 @@ final class JobProcessor
                 'Accept' => 'application/json',
             ]
         ];
-        $response = (new Client())->post('https://dev.manychat.com/apps/wh', $options);
+        $response = (new Client())->post('https://manychat.com/apps/wh', $options);
         $response = json_decode((string)$response->getBody()); // @todo need?
 
         var_dump($response);
