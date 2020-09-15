@@ -78,7 +78,7 @@ final class CartWebhookProcessor implements WebhookProcessor
         $scheduledAt = (new DateTimeImmutable())->modify(sprintf('+ %d %s', $period, $unit));
 
         if (null === $job) {
-            $job = new Job(Id::next(), $sign, $integration, $scheduledAt, null);
+            $job = new Job(Id::next(), $sign, $integration, $scheduledAt);
             $this->jobs->add($job);
         } else {
             $job->reschedule($scheduledAt);

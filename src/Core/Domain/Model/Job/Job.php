@@ -35,12 +35,6 @@ final class Job
     private Integration $integration;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $subscriberId;
-
-    /**
      * @var Sign
      * @ORM\Column(type="sign")
      */
@@ -58,13 +52,12 @@ final class Job
      */
     private DateTimeImmutable $createdAt;
 
-    public function __construct(Id $id, Sign $sign, Integration $integration, DateTimeImmutable $scheduledAt, ?int $subscriberId)
+    public function __construct(Id $id, Sign $sign, Integration $integration, DateTimeImmutable $scheduledAt)
     {
         $this->id = $id;
         $this->sign = $sign;
         $this->integration = $integration;
         $this->scheduledAt = $scheduledAt;
-        $this->subscriberId = $subscriberId;
         $this->createdAt = new DateTimeImmutable();
     }
 
@@ -81,10 +74,5 @@ final class Job
     public function getIntegration(): Integration
     {
         return $this->integration;
-    }
-
-    public function setSubscriberId(int $subscriberId): void
-    {
-        $this->subscriberId = $subscriberId;
     }
 }
