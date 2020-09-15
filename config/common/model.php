@@ -86,8 +86,9 @@ return [
 
     IntegrationCartRedirectHandler::class => fn(ContainerInterface $c) => new IntegrationCartRedirectHandler(
         $c->get(ClientConfigurator::class),
-        $c->get(CartSessionRepository::class),
         $c->get(IntegrationRepository::class),
+        $c->get(CartSessionRepository::class),
+        $c->get(CartRepository::class),
     ),
 
     WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(

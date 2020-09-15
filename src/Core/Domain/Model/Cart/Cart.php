@@ -60,6 +60,11 @@ final class Cart
         $this->payload = $payload;
     }
 
+    public function getPayload(): array
+    {
+        return $this->payload;
+    }
+
     public function getId(): string
     {
         return $this->id;
