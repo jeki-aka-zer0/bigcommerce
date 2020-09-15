@@ -58,6 +58,8 @@ final class JobProcessor
         $this->clientConfigurator->configureV3($integration);
         $redirectUrls = BigcommerceClient::createResource('/carts/' . $cartId . '/redirect_urls', []);
 
+        var_dump($redirectUrls);
+
         if (!$redirectUrls) {
             var_dump($redirectUrls);
             throw new WrongLoadPayloadException(); // @todo fix
