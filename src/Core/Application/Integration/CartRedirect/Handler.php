@@ -14,7 +14,7 @@ use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class Handler
 {
-    private CartRepository $cartSessionRepository;
+    private CartSessionRepository $cartSessionRepository;
 
     private IntegrationRepository $integrationRepository;
 
