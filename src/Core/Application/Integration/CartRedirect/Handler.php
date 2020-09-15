@@ -52,8 +52,8 @@ final class Handler
         ]);
 
         if (!$response) {
+            // @todo process
             echo '<pre>';
-            var_dump($cart->getPayload()['line_items']);
             var_dump(Client::getLastError());
             throw new WrongLoadPayloadException();
         }
@@ -61,11 +61,10 @@ final class Handler
         if ($command->isDebug()) {
             echo '<pre>';
             var_dump($response);
-            var_dump(Client::getLastError());
             exit;
         }
 
-//        $this->checkoutUrl = $redirectUrls->data->checkout_url;
+        $this->checkoutUrl = $response->data->redirect_urls->checkout_url;
     }
 
     public function getCheckoutUrl(): string
