@@ -61,7 +61,7 @@ final class JobProcessor
         var_dump($redirectUrls);
 
         if (!$redirectUrls) {
-            var_dump($redirectUrls);
+            var_dump(BigcommerceClient::getLastError());
             throw new WrongLoadPayloadException(); // @todo fix
         }
 
