@@ -42,6 +42,7 @@ final class JobProcessor
         $response = json_decode((string)$response->getBody(), true); // @todo need?
 
         if ($response['status'] ?? '' !== 'success') {
+            var_dump($response);
             throw new WrongLoadPayloadException(); // @todo fix
         }
 
