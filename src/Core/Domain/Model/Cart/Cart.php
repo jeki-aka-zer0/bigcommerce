@@ -69,4 +69,9 @@ final class Cart
     {
         $this->isPaid = true;
     }
+
+    public function isPaid(): bool
+    {
+        return $this->isPaid;
+    }
 }

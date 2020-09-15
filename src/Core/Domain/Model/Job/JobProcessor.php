@@ -7,6 +7,7 @@ namespace Src\Core\Domain\Model\Job;
 use GuzzleHttp\Client;
 use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\CartSession\CartSessionRepository;
+use Src\Core\Domain\Model\CommonRuntimeException;
 use Src\Core\Domain\Model\WrongLoadPayloadException;
 
 final class JobProcessor
@@ -32,6 +33,10 @@ final class JobProcessor
         $cartId = $job->getSign()->getIdentity();
         $cartSession = $this->cartSessions->getByCartId($cartId);
         $cart = $this->carts->getById($cartId);
+        if ($cart->isPaid()) {
+            throw new CommonRuntimeException('Cart is paid'); // @todo fix
+        }
+
         $integration = $job->getIntegration();
 
         $url = sprintf('https://manychat.com/apiPixel/getSession?session_id=%s', $cartSession->getSessionId());
