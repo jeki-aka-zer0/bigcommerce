@@ -137,7 +137,7 @@ class Integration
         return $this->publicApiKey;
     }
 
-    public function getAbandonedPeriod(): string
+    public function getAbandonedPeriod(): int
     {
         return $this->abandonedPeriod;
     }

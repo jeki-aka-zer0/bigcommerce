@@ -70,7 +70,7 @@ final class CartWebhookProcessor implements WebhookProcessor
         // @todo move
         $units = ['minutes', 'hours', 'days'];
         $unit = \in_array($integration->getAbandonedUnit(), $units, true) ? $integration->getAbandonedUnit() : $units[1];
-        $period = (int)$integration->getAbandonedPeriod();
+        $period = $integration->getAbandonedPeriod();
         if ($period < 0) {
             $period = 1;
         }
