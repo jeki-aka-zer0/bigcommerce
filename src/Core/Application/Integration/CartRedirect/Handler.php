@@ -44,7 +44,7 @@ final class Handler
             throw new WrongLoadPayloadException();
         }
 
-        $this->checkoutUrl = $redirectUrls['data']['checkout_url'];
+        $this->checkoutUrl = $redirectUrls->data->checkout_url;
     }
 
     public function getCheckoutUrl(): string
