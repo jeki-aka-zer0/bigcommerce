@@ -31,11 +31,11 @@ final class CartConvertedWebhookProcessor implements WebhookProcessor
         $data = $dto->getData();
 
         $cart = $this->carts->findById($data->getCartId());
-        if (null !== $cart) {
+        if (null !== $cart && !$cart->isPaid()) {
             $cart->markAsPaid();
         }
 
-        $sign = Sign::build(CartWebhookProcessor::TRIGGER_KEY_CART, $data->getCartId());
+        $sign = Sign::build(CartWebhookProcessor::TRIGGER_KEY_CART, $cart->getId());
         $this->jobs->removeAllBySign($sign);
 
         $this->flusher->flush();
