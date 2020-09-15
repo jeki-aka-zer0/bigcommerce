@@ -31,6 +31,11 @@ final class DoctrineJobRepository implements JobRepository
         return $job;
     }
 
+    public function findAllBySign(Sign $sign): array
+    {
+        return $this->repo->findBy(['sign' => $sign->getSign()]);
+    }
+
     public function pop(): array
     {
         $sql = <<<SQL
@@ -49,5 +54,10 @@ final class DoctrineJobRepository implements JobRepository
     public function add(Job $job): void
     {
         $this->em->persist($job);
+    }
+
+    public function removeAllBySign(Sign $sign): void
+    {
+        array_map(fn(Job $job) => $this->em->remove($job), $this->findAllBySign($sign));
     }
 }

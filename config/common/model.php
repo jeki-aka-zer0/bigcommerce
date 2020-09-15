@@ -12,6 +12,7 @@ use Src\Core\Application\Integration\Link\Handler as IntegrationLinkHandler;
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
+use Src\Core\Domain\Model\Cart\CartConvertedWebhookProcessor;
 use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\Cart\CartWebhookProcessor;
 use Src\Core\Domain\Model\Job\JobRepository;
@@ -85,13 +86,20 @@ return [
     WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(
         $c->get(StoreRepository::class),
         $c->get(IntegrationRepository::class),
-        new WebhookFactory(new CartWebhookProcessor(
-            $c->get(IntegrationRepository::class),
-            $c->get(CartRepository::class),
-            $c->get(FlusherInterface::class),
-            $c->get(ClientConfigurator::class),
-            $c->get(JobRepository::class),
-        )),
+        new WebhookFactory(
+            new CartWebhookProcessor(
+                $c->get(IntegrationRepository::class),
+                $c->get(CartRepository::class),
+                $c->get(FlusherInterface::class),
+                $c->get(ClientConfigurator::class),
+                $c->get(JobRepository::class),
+            ),
+            new CartConvertedWebhookProcessor(
+                $c->get(FlusherInterface::class),
+                $c->get(JobRepository::class),
+                $c->get(CartRepository::class),
+            ),
+        ),
     ),
 
     WebhookManager::class => fn(ContainerInterface $c) => new WebhookManager(

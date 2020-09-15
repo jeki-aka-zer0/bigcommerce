@@ -26,11 +26,10 @@ final class Handler
 
     public function handle(Command $command): void
     {
-        $hash = explode('/', $command->getProducer())[1]; // @todo fix
         $data = $this->processorFactory->getData($command->getScore(), $command->getData());
         $store = $this->stores->getById($command->getStoreId());
         $integration = $this->integrations->getByStoreHash($store->getIntegration()->getStoreHash());
-        $dto = new WebhookDto($command->getScore(), $data, $hash, $store, $integration);
+        $dto = new WebhookDto($command->getScore(), $data, $store->getIntegration()->getStoreHash(), $store, $integration);
 
         $this->processorFactory->getProcessor($command->getScore())->process($dto);
     }

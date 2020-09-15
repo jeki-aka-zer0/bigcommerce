@@ -30,6 +30,12 @@ final class Cart
     private array $payload;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isPaid = false;
+
+    /**
      * @var DateTimeImmutable
      * @ORM\Column(type="datetime_immutable", name="create_at")
      */
@@ -57,5 +63,10 @@ final class Cart
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function markAsPaid(): void
+    {
+        $this->isPaid = true;
     }
 }

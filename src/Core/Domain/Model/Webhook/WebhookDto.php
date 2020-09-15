@@ -14,13 +14,13 @@ final class WebhookDto
 
     private Data $data;
 
-    private string $hash;
+    private Hash $hash;
 
     private Store $store;
 
     private Integration $integration;
 
-    public function __construct(string $scope, Data $data, string $hash, Store $store, Integration $integration)
+    public function __construct(string $scope, Data $data, Hash $hash, Store $store, Integration $integration)
     {
         $this->scope = $scope;
         $this->data = $data;
@@ -41,7 +41,7 @@ final class WebhookDto
 
     public function getHash(): Hash
     {
-        return new Hash($this->hash);
+        return new $this->hash;
     }
 
     public function getStore(): Store

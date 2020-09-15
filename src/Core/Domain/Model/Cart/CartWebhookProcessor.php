@@ -19,7 +19,7 @@ use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class CartWebhookProcessor implements WebhookProcessor
 {
-    private const TRIGGER_KEY_CART = 'abandoned_cart';
+    public const TRIGGER_KEY_CART = 'abandoned_cart';
 
     private IntegrationRepository $integrations;
 
