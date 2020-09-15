@@ -44,12 +44,14 @@ final class JobProcessor
         $response = json_decode((string)$response->getBody(), true); // @todo need?
 
         if ('success' !== ($response['status'] ?? '')) {
-            throw new WrongLoadPayloadException(); // @todo fix
+            var_dump($response);
+            throw new WrongLoadPayloadException('Not success status'); // @todo fix
         }
 
         $subscriberId = $response['data']['subscriber_id'] ?? null;
         if (empty($subscriberId)) {
-            throw new WrongLoadPayloadException(); // @todo fix
+            var_dump($response);
+            throw new WrongLoadPayloadException('No subscriber_id'); // @todo fix
         }
 
 //        $this->clientConfigurator->configureV3($integration);
