@@ -68,7 +68,7 @@ final class CartWebhookProcessor implements WebhookProcessor
         $job = $this->jobs->findBySign($sign);
 
         // @todo move
-        $units = ['seconds', 'minutes', 'hours', 'days'];
+        $units = ['minutes', 'hours', 'days'];
         $unit = \in_array($integration->getAbandonedUnit(), $units, true) ? $integration->getAbandonedUnit() : $units[2];
         $period = (int)$integration->getAbandonedPeriod();
         if ($period < 0) {
