@@ -23,7 +23,7 @@ class Action implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $command = new Command($queryParams['cart_id']);
+        $command = new Command($queryParams['cart_id'], (bool) ($queryParams['debug'] ?? false));
 
         $this->handler->handle($command);
 
