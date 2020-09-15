@@ -74,7 +74,7 @@ final class JobProcessor
             ]),
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $integration->getTriggerApiKey()),
-                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
             ]
         ];
         $response = (new Client())->post('https://manychat.com/apps/wh', $options);
