@@ -58,8 +58,6 @@ final class JobProcessor
         $this->clientConfigurator->configureV3($integration);
         $redirectUrls = BigcommerceClient::createResource('/carts/' . $cartId . '/redirect_urls', []);
 
-        var_dump($redirectUrls);
-
         if (!$redirectUrls) {
             var_dump(BigcommerceClient::getLastError());
             throw new WrongLoadPayloadException(); // @todo fix
@@ -73,7 +71,7 @@ final class JobProcessor
                 'trigger_name' => 'abandoned_cart', // @todo config
                 'context' => [  // @todo
 //                    Для начала хватит этих двух
-                    'cart_url' => $redirectUrls['checkout_url']
+                    'cart_url' => $redirectUrls['data']['checkout_url']
 //                    Cart Price
 
 //                    First Added Product Image
