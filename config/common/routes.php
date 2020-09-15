@@ -8,6 +8,7 @@ use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
 use Src\Core\Application\Integration\Link\Handler as IntegrationLinkHandler;
+use Src\Core\Application\Integration\CartRedirect\Handler as IntegrationCartRedirectHandler;
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Infrastructure\Ui\Web\Action;
 use Symfony\Component\Templating\PhpEngine;
@@ -44,5 +45,9 @@ return [
 
     Action\BigCommerce\Link\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\Link\Action(
         $c->get(IntegrationLinkHandler::class),
+    ),
+
+    Action\BigCommerce\CartRedirect\Action::class => fn(ContainerInterface $c) => new Action\BigCommerce\CartRedirect\Action(
+        $c->get(IntegrationCartRedirectHandler::class),
     ),
 ];

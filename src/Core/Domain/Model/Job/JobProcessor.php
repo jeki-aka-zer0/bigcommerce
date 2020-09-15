@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Src\Core\Domain\Model\Job;
 
 use GuzzleHttp\Client;
-use Bigcommerce\Api\Client as BigcommerceClient;
-use Src\Core\Domain\Model\Auth\IntegrationRepository;
 use Src\Core\Domain\Model\Cart\CartRepository;
 use Src\Core\Domain\Model\CartSession\CartSessionRepository;
 use Src\Core\Domain\Model\WrongLoadPayloadException;
-use Src\Core\Infrastructure\Domain\Model\ClientConfigurator;
 
 final class JobProcessor
 {
@@ -18,16 +15,16 @@ final class JobProcessor
 
     private CartRepository $carts;
 
-    private IntegrationRepository $integrations;
+    private string $domain;
 
-    private ClientConfigurator $clientConfigurator;
-
-    public function __construct(CartSessionRepository $cartSessions, CartRepository $carts, IntegrationRepository $integrations, ClientConfigurator $clientConfigurator)
-    {
+    public function __construct(
+        CartSessionRepository $cartSessions,
+        CartRepository $carts,
+        string $domain
+    ) {
         $this->cartSessions = $cartSessions;
         $this->carts = $carts;
-        $this->integrations = $integrations;
-        $this->clientConfigurator = $clientConfigurator;
+        $this->domain = $domain;
     }
 
     public function process(Job $job): void
@@ -47,21 +44,25 @@ final class JobProcessor
         $response = json_decode((string)$response->getBody(), true); // @todo need?
 
         if ('success' !== ($response['status'] ?? '')) {
-            throw new WrongLoadPayloadException(); // @todo fix
+            var_dump($response);
+            throw new WrongLoadPayloadException('Not success status'); // @todo fix
         }
 
         $subscriberId = $response['data']['subscriber_id'] ?? null;
         if (empty($subscriberId)) {
-            throw new WrongLoadPayloadException(); // @todo fix
+            var_dump($cartSession->getSessionId());
+            var_dump($response);
+            throw new WrongLoadPayloadException('No subscriber_id'); // @todo fix
         }
 
-        $this->clientConfigurator->configureV3($integration);
-        $redirectUrls = BigcommerceClient::createResource('/carts/' . $cartId . '/redirect_urls', []);
-
-        if (!$redirectUrls) {
-            var_dump(BigcommerceClient::getLastError());
-            throw new WrongLoadPayloadException(); // @todo fix
-        }
+//        $this->clientConfigurator->configureV3($integration);
+//        $redirectUrls = BigcommerceClient::createResource('/carts/' . $cartId . '/redirect_urls', []);
+//
+//        if (!$redirectUrls) {
+//            var_dump(BigcommerceClient::getLastError());
+//            throw new WrongLoadPayloadException(); // @todo fix
+//        }
+//        $redirectUrls['data']['checkout_url']
 
         // Дока - https://support.manychat.com/support/solutions/articles/36000228026-dev-program-quick-start#How-to-Use-Triggers
         $options = [
@@ -71,7 +72,7 @@ final class JobProcessor
                 'trigger_name' => 'abandoned_cart', // @todo config
                 'context' => [  // @todo
 //                    Для начала хватит этих двух
-                    'cart_url' => $redirectUrls['data']['checkout_url']
+                    'cart_url' => $this->domain . '/big-commerce/cart-redirect?cart_id=' . $cartId
 //                    Cart Price
 
 //                    First Added Product Image
