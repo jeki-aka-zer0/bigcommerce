@@ -49,6 +49,7 @@ final class Handler
 
         if (!$response) {
             echo '<pre>';
+            var_dump($cart->getPayload()['line_items']);
             var_dump(Client::getLastError());
             throw new WrongLoadPayloadException();
         }
