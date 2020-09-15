@@ -52,7 +52,7 @@ final class JobProcessor
 
         // Дока - https://support.manychat.com/support/solutions/articles/36000228026-dev-program-quick-start#How-to-Use-Triggers
         $options = [
-            'body' => [
+            'body' => json_encode([
                 'version' => 1,
                 'subscriber_id' => $subscriberId,
                 'trigger_name' => 'abandoned_cart', // @todo config
@@ -71,7 +71,7 @@ final class JobProcessor
 //                    Most Expensive Product Quantity
 //                    Cart Is Paid (no)
 //                ],
-            ],
+            ]),
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $integration->getTriggerApiKey()),
                 'Accept' => 'application/json',
