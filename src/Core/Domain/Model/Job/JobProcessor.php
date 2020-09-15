@@ -39,7 +39,7 @@ final class JobProcessor
             ]
         ];
         $response = (new Client())->get($url, $options);
-        $response = json_decode((string)$response->getBody()); // @todo need?
+        $response = json_decode((string)$response->getBody(), true); // @todo need?
 
         if ($response['status'] ?? '' !== 'success') {
             throw new WrongLoadPayloadException(); // @todo fix
@@ -78,7 +78,7 @@ final class JobProcessor
             ]
         ];
         $response = (new Client())->post('https://manychat.com/apps/wh', $options);
-        $response = json_decode((string)$response->getBody()); // @todo need?
+        $response = json_decode((string)$response->getBody(), true); // @todo need?
 
         var_dump($response);
 
