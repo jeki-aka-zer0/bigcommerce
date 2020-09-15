@@ -57,4 +57,9 @@ final class CartSession
     {
         return $this->sessionId;
     }
+
+    public function getStoreHash(): string
+    {
+        return $this->storeHash;
+    }
 }

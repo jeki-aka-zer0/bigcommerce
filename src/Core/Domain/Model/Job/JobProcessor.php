@@ -72,7 +72,7 @@ final class JobProcessor
                 'trigger_name' => 'abandoned_cart', // @todo config
                 'context' => [  // @todo
 //                    Для начала хватит этих двух
-                    'cart_url' => $this->domain . '/big-commerce/cartRedirect?cartId=' . $cartId
+                    'cart_url' => $this->domain . '/big-commerce/cart-redirect?cart_id=' . $cartId
 //                    Cart Price
 
 //                    First Added Product Image
