@@ -50,6 +50,7 @@ final class JobProcessor
 
         $subscriberId = $response['data']['subscriber_id'] ?? null;
         if (empty($subscriberId)) {
+            var_dump($cartSession->getSessionId());
             var_dump($response);
             throw new WrongLoadPayloadException('No subscriber_id'); // @todo fix
         }
