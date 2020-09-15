@@ -9,6 +9,7 @@ use Src\Core\Application\Integration\View\Handler as IntegrationViewHandler;
 use Src\Core\Application\Integration\Update\Handler as IntegrationUpdateHandler;
 use Src\Core\Application\Integration\Uninstall\Handler as IntegrationUninstallHandler;
 use Src\Core\Application\Integration\Link\Handler as IntegrationLinkHandler;
+use Src\Core\Application\Integration\CartRedirect\Handler as IntegrationCartRedirectHandler;
 use Src\Core\Application\Webhook\Receive\Handler as WebhookReceiveHandler;
 use Src\Core\Domain\Model\Auth\CredentialsDto;
 use Src\Core\Domain\Model\Auth\IntegrationRepository;
@@ -80,6 +81,12 @@ return [
     IntegrationLinkHandler::class => fn(ContainerInterface $c) => new IntegrationLinkHandler(
         $c->get(CartSessionRepository::class),
         $c->get(FlusherInterface::class),
+    ),
+
+    IntegrationCartRedirectHandler::class => fn(ContainerInterface $c) => new IntegrationCartRedirectHandler(
+        $c->get(ClientConfigurator::class),
+        $c->get(CartSessionRepository::class),
+        $c->get(IntegrationRepository::class),
     ),
 
     WebhookReceiveHandler::class => fn(ContainerInterface $c) => new WebhookReceiveHandler(
