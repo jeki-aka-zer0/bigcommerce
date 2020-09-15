@@ -44,7 +44,11 @@ final class Handler
 
         $this->clientConfigurator->configureV3($integration);
         $response = Client::createResource('/carts?include=redirect_urls', [
-            'line_items' => $cart->getPayload()['line_items']
+            'line_items' => array_merge(
+                $cart->getPayload()['line_items']['digital_items'],
+                $cart->getPayload()['line_items']['physical_items'],
+            ),
+            'custom_items' => $cart->getPayload()['line_items']['custom_items'],
         ]);
 
         if (!$response) {
