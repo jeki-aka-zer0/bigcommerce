@@ -45,6 +45,7 @@ final class Handler
         }
 
         if ($command->isDebug()) {
+            echo '<pre>';
             var_dump($redirectUrls);
             exit;
         }
