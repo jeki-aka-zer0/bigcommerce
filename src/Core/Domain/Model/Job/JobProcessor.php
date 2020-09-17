@@ -60,35 +60,33 @@ final class JobProcessor
             throw new WrongLoadPayloadException('No subscriber_id'); // @todo fix
         }
 
-//        $this->clientConfigurator->configureV3($integration);
-//        $redirectUrls = BigcommerceClient::createResource('/carts/' . $cartId . '/redirect_urls', []);
-//
-//        if (!$redirectUrls) {
-//            var_dump(BigcommerceClient::getLastError());
-//            throw new WrongLoadPayloadException(); // @todo fix
-//        }
-//        $redirectUrls['data']['checkout_url']
+        $cartPayload = $cart->getPayload();
+        $lineItems = array_merge($cartPayload['line_items']['physical_items'], $cartPayload['line_items']['digital_items'], $cartPayload['line_items']['custom_items']);
 
-        // Дока - https://support.manychat.com/support/solutions/articles/36000228026-dev-program-quick-start#How-to-Use-Triggers
+        if (empty($lineItems)) {
+            throw new CommonRuntimeException('Cart is empty'); // @todo fix
+        }
+
+        $mostExpensiveLineItem = $lineItems[0];
+        foreach ($lineItems as $lineItem) {
+            if ($lineItem['list_price'] > $mostExpensiveLineItem['list_price']) {
+                $mostExpensiveLineItem = $lineItem;
+            }
+        }
+
         $options = [
             'body' => json_encode([
                 'version' => 1,
                 'subscriber_id' => $subscriberId,
-                'trigger_name' => 'abandoned_cart', // @todo config
-                'context' => [  // @todo
-//                    Для начала хватит этих двух
-                    'cart_url' => $this->domain . '/big-commerce/cart-redirect?cart_id=' . $cartId
-//                    Cart Price
+                'trigger_name' => 'abandoned_cart',
+                'context' => [
+                    'cart_url' => $this->domain . '/big-commerce/cart-redirect?cart_id=' . $cartId,
+                    'cart_price' => (float) $cartPayload['cart_amount'],
 
-//                    First Added Product Image
-//                    First Added Product Title
-//                    First Added Product Price
-//                    First Added Product Quantity
-//                    Most Expensive Product Image
-//                    Most Expensive Product Title
-//                    Most Expensive Product Price
-//                    Most Expensive Product Quantity
-//                    Cart Is Paid (no)
+                    'most_expensive_product_image' => $mostExpensiveLineItem['image_url'],
+                    'most_expensive_product_title' => $mostExpensiveLineItem['name'],
+                    'most_expensive_product_price' => $mostExpensiveLineItem['list_price'],
+                    'most_expensive_product_quantity' => $mostExpensiveLineItem['quantity'],
                 ],
             ]),
             'headers' => [
@@ -96,11 +94,7 @@ final class JobProcessor
                 'Content-Type' => 'application/json',
             ]
         ];
-        $response = (new Client())->post('https://manychat.com/apps/wh', $options);
-        $response = json_decode((string)$response->getBody(), true); // @todo need?
 
-        var_dump($response);
-
-        // @todo check response
+        (new Client())->post('https://manychat.com/apps/wh', $options);
     }
 }
