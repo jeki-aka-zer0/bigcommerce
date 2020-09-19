@@ -28,3 +28,5 @@ Content-Type: application/json
 }
 
 ###
+GET https://127.0.0.1/big-commerce/jobs
+Content-Type: application/json

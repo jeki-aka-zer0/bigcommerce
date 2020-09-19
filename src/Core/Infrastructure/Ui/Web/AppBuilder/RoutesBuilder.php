@@ -49,6 +49,8 @@ final class RoutesBuilder extends AbstractBuilder
                     ->add(fn(Request $r, Handler $h) => (new Validation($validator, new CartRedirectForm($r)))->process($r, $h));
 
                 $group->post('/webhook/receive', Action\BigCommerce\Webhook\Receive\Action::class . '::handle');
+
+                $group->get('/jobs', Action\BigCommerce\Job\Action::class . '::handle');
             }
         );
     }
