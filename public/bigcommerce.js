@@ -43,6 +43,7 @@
             return;
         }
 
+        // todo кажется флаг нужно сбрасывать (хранить там слинкованную sessionId?)
         if ('da' === localStorage.getItem('bigcommerce_manychat_cart_linked')) {
             return;
         }
